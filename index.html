@@ -16,6 +16,8 @@
             --accent-red: #ff3b3b;
             --accent-red-glow: rgba(255, 59, 59, 0.4);
             --accent-green: #4ade80;
+            --accent-gold: #ffd700;
+            --accent-purple: #a855f7;
             --proton-color: #ff3b3b;
             --neutron-color: #ffffff;
             --electron-color: #2b7fff;
@@ -271,6 +273,93 @@
             .time-display { min-width: 80px; font-size: 0.6rem; }
             .volume-slider { width: 30px; }
         }
+
+        /* ============ UTILITAIRES COULEUR ============ */
+        .green { color: var(--accent-green); }
+        .gold { color: var(--accent-gold); }
+        .red { color: var(--accent-red); }
+        .purple { color: var(--accent-purple); }
+
+        /* ============ POTENTIELS HALF-REACTIONS ============ */
+        .half-reaction-box .potential {
+            display: block; margin-top: 4px; font-size: 0.55rem;
+            color: var(--accent-gold); font-style: italic;
+        }
+
+        /* ============ PANNEAU REDOX (LATIMER + FROST) ============ */
+        .redox-panel { background: var(--panel-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .redox-panel h3 { color: var(--accent-purple); font-size: 0.7rem; margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; display: flex; justify-content: space-between; }
+        .redox-section { margin-bottom: 10px; }
+        .redox-section:last-child { margin-bottom: 0; }
+        .redox-label { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .latimer-container {
+            display: flex; align-items: center; flex-wrap: wrap; gap: 4px;
+            padding: 8px; background: rgba(0,0,0,0.3); border-radius: 3px;
+            border: 1px solid var(--border-color); min-height: 40px;
+        }
+        .latimer-species {
+            background: var(--accent-purple); color: #fff; padding: 3px 8px;
+            border-radius: 3px; font-size: 0.65rem; font-weight: bold;
+            box-shadow: 0 0 6px rgba(168, 85, 247, 0.4);
+        }
+        .latimer-arrow {
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--accent-gold); font-size: 0.7rem;
+        }
+        .latimer-arrow .evalue { font-size: 0.55rem; color: var(--accent-gold); font-weight: bold; }
+        .frost-canvas {
+            width: 100%; height: 200px; background: rgba(0,0,0,0.3);
+            border-radius: 3px; border: 1px solid var(--border-color);
+        }
+
+        /* ============ GRILLE D'OUTILS ============ */
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tool-panel {
+            background: var(--panel-bg); border: 1px solid var(--border-color);
+            padding: 10px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .tool-panel h3 {
+            color: var(--accent-blue); font-size: 0.65rem; margin-bottom: 4px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 3px;
+            text-transform: uppercase; letter-spacing: 1px; font-weight: bold;
+        }
+        .tool-panel label { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+        .tool-input {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border-color);
+            color: var(--text-main); padding: 6px 8px; border-radius: 3px;
+            font-family: 'Courier New', monospace; font-size: 0.7rem;
+            outline: none; transition: border-color 0.2s; width: 100%;
+        }
+        .tool-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 6px var(--accent-blue-glow); }
+        .thermo-row { display: flex; align-items: center; gap: 6px; }
+        .thermo-row label { min-width: 90px; }
+        .thermo-row input {
+            flex-grow: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color);
+            color: var(--text-main); padding: 4px 6px; border-radius: 3px;
+            font-family: 'Courier New', monospace; font-size: 0.7rem; outline: none; min-width: 0;
+        }
+        .thermo-row input:focus { border-color: var(--accent-blue); }
+        .thermo-buttons { display: flex; gap: 6px; }
+        .tool-btn {
+            background: var(--accent-blue); color: #fff; border: none;
+            padding: 6px 12px; border-radius: 3px; font-weight: bold; cursor: pointer;
+            font-size: 0.65rem; box-shadow: 0 0 8px var(--accent-blue-glow);
+            transition: all 0.2s; font-family: 'Courier New', monospace; flex: 1;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .tool-btn:hover { background: #4a94ff; }
+        .tool-btn:active { transform: scale(0.97); }
+        .tool-result {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border-color);
+            padding: 6px 8px; border-radius: 3px; font-size: 0.65rem;
+            color: var(--text-main); font-family: 'Courier New', monospace;
+            line-height: 1.5; min-height: 24px; word-break: break-word;
+        }
+        .vsepr-svg { background: rgba(0,0,0,0.2); border-radius: 3px; }
+        @media (max-width: 500px) {
+            .tools-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -363,10 +452,12 @@
                 <div class="half-reaction-box oxidation">
                     <span class="label">OXIDATION (Anode)</span>
                     <span class="eq" id="oxidationEq"></span>
+                    <span class="potential" id="oxidationPotential"></span>
                 </div>
                 <div class="half-reaction-box reduction">
                     <span class="label">REDUCTION (Cathode)</span>
                     <span class="eq" id="reductionEq"></span>
+                    <span class="potential" id="reductionPotential"></span>
                 </div>
             </div>
 
@@ -391,6 +482,81 @@
             <div class="reactions-panel">
                 <h4>🧪 Réactions classiques pour <span id="reactionElementName">Nitrogen</span></h4>
                 <div class="reaction-list" id="reactionList"></div>
+            </div>
+        </section>
+
+        <section class="redox-panel">
+            <h3>
+                <span>⚡ Diagrammes Redox</span>
+                <span style="font-weight:normal; opacity:0.7" id="redoxElementName">Nitrogen</span>
+            </h3>
+            <div class="redox-section">
+                <div class="redox-label">Diagramme de Latimer (pH = 0)</div>
+                <div class="latimer-container" id="latimerDiagram"></div>
+            </div>
+            <div class="redox-section">
+                <div class="redox-label">Diagramme de Frost (nE° vs numéro d'oxydation)</div>
+                <div class="frost-canvas" id="frostCanvas"></div>
+            </div>
+        </section>
+
+        <section class="tools-grid">
+            <div class="tool-panel">
+                <h3>🔥 Loi de Hess</h3>
+                <input type="text" id="hessInput" class="tool-input" placeholder="Ex: CH4(g) + 2 O2(g) -> CO2(g) + 2 H2O(l)" value="N2(g) + 3 H2(g) -> 2 NH3(g)">
+                <button id="hessBtn" class="tool-btn">CALCULER ΔH°</button>
+                <div class="tool-result" id="hessResult">Entrez une équation avec états physiques (g, l, s, aq).</div>
+            </div>
+
+            <div class="tool-panel">
+                <h3>⚛ Thermodynamique & Nernst</h3>
+                <div class="thermo-row"><label>E° (V) :</label><input type="number" id="ecellInput" value="1.10" step="0.01"></div>
+                <div class="thermo-row"><label>n (e⁻) :</label><input type="number" id="nElectronsInput" value="2" step="1"></div>
+                <div class="thermo-row"><label>T (K) :</label><input type="number" id="tempInput" value="298.15" step="0.01"></div>
+                <div class="thermo-row"><label>Q :</label><input type="number" id="qInput" value="1" step="0.01"></div>
+                <div class="thermo-buttons">
+                    <button id="calcThermoBtn" class="tool-btn">ΔG° & K</button>
+                    <button id="calcNernstBtn" class="tool-btn">Nernst E</button>
+                </div>
+                <div class="tool-result" id="thermoResult">—</div>
+                <div class="tool-result" id="nernstResult">—</div>
+            </div>
+
+            <div class="tool-panel">
+                <h3>🧬 Lewis & VSEPR</h3>
+                <input type="text" id="lewisInput" class="tool-input" placeholder="Ex: H2O, NH3, CH4, SF6, CO2" value="H2O">
+                <button id="lewisBtn" class="tool-btn">ANALYSER</button>
+                <div class="tool-result" id="lewisResult">Entrez une formule moléculaire.</div>
+            </div>
+
+            <div class="tool-panel">
+                <h3>🧪 pH & Henderson-Hasselbalch</h3>
+                <div class="thermo-row"><label>[H⁺] (mol/L) :</label><input type="number" id="hConcentration" value="0.001" step="any"></div>
+                <div class="tool-result" id="phResult">pH = —</div>
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 4px 0;">
+                <div class="thermo-row"><label>pKa :</label><input type="number" id="pkaInput" value="4.76" step="0.01"></div>
+                <div class="thermo-row"><label>[A⁻]/[HA] :</label><input type="number" id="ratioInput" value="1" step="any"></div>
+                <div class="tool-result" id="hendersonResult">pH = —</div>
+            </div>
+
+            <div class="tool-panel">
+                <h3>🎓 Exercice d'équilibrage</h3>
+                <div style="font-size: 0.6rem; color: var(--text-dim); line-height: 1.4;">Équilibrez l'équation du Solver ci-dessus, puis entrez votre réponse complète (réactifs → produits) :</div>
+                <input type="text" id="exerciseInput" class="tool-input" placeholder="Ex: N2 + 3 H2 -> 2 NH3">
+                <button id="checkBtn" class="tool-btn">VÉRIFIER</button>
+                <div class="tool-result" id="exerciseFeedback">—</div>
+            </div>
+
+            <div class="tool-panel">
+                <h3>💡 Aide & Raccourcis</h3>
+                <div style="font-size: 0.6rem; color: var(--text-dim); line-height: 1.6;">
+                    • Cliquez un élément du tableau pour le charger.<br>
+                    • Cliquez une réaction pour l'envoyer vers le Solver.<br>
+                    • Hess : indiquez les états (g/l/s/aq).<br>
+                    • Latimer/Frost : Fe, Mn, Cr, Cu, N, S, Cl, O, Ag, Pb.<br>
+                    • Nernst : Q = quotient réactionnel.<br>
+                    • VSEPR : formules type H2O, NH3, CH4, SF6.
+                </div>
             </div>
         </section>
 
@@ -816,27 +982,6 @@
             return orbitalShort;
         }
 
-        function getHalfReactions(symbol, protons, category, valence) {
-            let ox, red;
-            if (category.includes('Alkali')) { ox = 1; red = 1; }
-            else if (category.includes('Alkaline')) { ox = 2; red = 2; }
-            else if (category.includes('Noble')) { ox = 0; red = 0; }
-            else if (category.includes('Halogen')) { ox = 1; red = 1; }
-            else if (symbol === 'H') { ox = 1; red = 1; }
-            else if (symbol === 'O') { ox = 2; red = 2; }
-            else if (symbol === 'N') { ox = 3; red = 3; }
-            else if (symbol === 'C') { ox = 4; red = 4; }
-            else if (symbol === 'S') { ox = 2; red = 2; }
-            else if (valence <= 3) { ox = valence; red = 8 - valence; }
-            else { ox = valence; red = 8 - valence; }
-            const fmt = (ch) => ch === 0 ? '' : (Math.abs(ch) === 1 ? (ch > 0 ? '+' : '−') : Math.abs(ch) + (ch > 0 ? '+' : '−'));
-            if (ox === 0) return { oxidation: `${symbol} (gaz noble, inerte)`, reduction: `Pas de réduction standard` };
-            return {
-                oxidation: `${symbol} → ${symbol}${fmt(ox)} + ${ox}e⁻`,
-                reduction: `${symbol} + ${red}e⁻ → ${symbol}${fmt(-red)}`
-            };
-        }
-
         const reactionsDB = {
             'H':[{type:'Combustion',eq:'H2 + O2 -> H2O'},{type:'Synthèse',eq:'H2 + N2 -> NH3'},{type:'Rédox',eq:'H2 + Cl2 -> HCl'},{type:'Métal+acide',eq:'Zn + HCl -> ZnCl2 + H2'}],
             'O':[{type:'Combustion',eq:'CH4 + O2 -> CO2 + H2O'},{type:'Combustion',eq:'C3H8 + O2 -> CO2 + H2O'},{type:'Oxydation',eq:'Fe + O2 -> Fe2O3'},{type:'Décomposition',eq:'H2O2 -> H2O + O2'}],
@@ -954,12 +1099,15 @@
 
             document.getElementById('equationsElement').textContent = name;
             document.getElementById('reactionElementName').textContent = name;
+            document.getElementById('redoxElementName').textContent = name;
             const fullConfig = getFullConfig(sym, protons, orbital);
             document.getElementById('electronicConfig').innerHTML = fullConfig.split(' ').map(part => `<span class="orbital">${part}</span>`).join(' ');
 
             const halfReactions = getHalfReactions(sym, protons, category, valence);
             document.getElementById('oxidationEq').textContent = halfReactions.oxidation;
             document.getElementById('reductionEq').textContent = halfReactions.reduction;
+            document.getElementById('oxidationPotential').textContent = halfReactions.oxPotential || '';
+            document.getElementById('reductionPotential').textContent = halfReactions.redPotential || '';
 
             const usesList = document.getElementById('usesList');
             usesList.innerHTML = '';
@@ -983,6 +1131,7 @@
             renderSpectrum(sym);
             renderAtom(protons, neutrons, shellsArr);
             renderReactions(sym, name, category, valence);
+            renderLatimer(sym);
 
             document.querySelectorAll('.pt-cell').forEach(c => c.classList.remove('active'));
             const activeCell = document.querySelector(`.pt-cell[data-symbol="${sym}"]`);
@@ -1117,7 +1266,7 @@
             }
             if (best === null) return { error: 'Pas de solution entière positive.' };
             coeffs = coeffs.map(c => Math.round(c * best));
-            const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, Math.abs(a));
+            const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, Math.abs(a) % Math.abs(b));
             let pg = coeffs.filter(c => c > 0).reduce((acc, c) => gcd(acc, c), 0);
             if (pg > 1) coeffs = coeffs.map(c => c / pg);
             if (coeffs.some(c => c <= 0)) return { error: 'Solution non positive.' };
@@ -1169,12 +1318,288 @@
                 document.getElementById('solveBtn').click();
             });
         });
+/* ============ COUPLES RÉDOX ============ */
+const redoxCouples={
+'H':[{couple:'H⁺/H₂',E:'0.00 V'}],'Li':[{couple:'Li⁺/Li',E:'-3.04 V'}],'Na':[{couple:'Na⁺/Na',E:'-2.71 V'}],
+'K':[{couple:'K⁺/K',E:'-2.93 V'}],'Mg':[{couple:'Mg²⁺/Mg',E:'-2.37 V'}],'Ca':[{couple:'Ca²⁺/Ca',E:'-2.87 V'}],
+'Al':[{couple:'Al³⁺/Al',E:'-1.66 V'}],'Zn':[{couple:'Zn²⁺/Zn',E:'-0.76 V'}],
+'Fe':[{couple:'Fe³⁺/Fe²⁺',E:'+0.77 V'},{couple:'Fe²⁺/Fe',E:'-0.44 V'}],
+'Cu':[{couple:'Cu²⁺/Cu',E:'+0.34 V'},{couple:'Cu²⁺/Cu⁺',E:'+0.16 V'}],
+'Ag':[{couple:'Ag⁺/Ag',E:'+0.80 V'}],'Au':[{couple:'Au³⁺/Au',E:'+1.50 V'}],
+'Cl':[{couple:'Cl₂/Cl⁻',E:'+1.36 V'}],'O':[{couple:'O₂/H₂O',E:'+1.23 V'}],
+'S':[{couple:'SO₄²⁻/SO₂',E:'+0.17 V'}],'N':[{couple:'NO₃⁻/NO',E:'+0.96 V'}],
+'F':[{couple:'F₂/F⁻',E:'+2.87 V'}],'Br':[{couple:'Br₂/Br⁻',E:'+1.07 V'}],'I':[{couple:'I₂/I⁻',E:'+0.54 V'}]
+};
 
-        /* ============================================================
-           INITIALISATION
-           ============================================================ */
-        loadElement('N');
-        document.getElementById('solveBtn').click();
+function getHalfReactions(sym, protons, category, valence){
+let ox,red;
+if(typeof category !== 'string'){category = '';}
+if(category.includes('Alkali')){ox=1;red=1}
+else if(category.includes('Alkaline')){ox=2;red=2}
+else if(category.includes('Noble')){ox=0;red=0}
+else if(category.includes('Halogen')){ox=1;red=1}
+else if(sym==='H'){ox=1;red=1}
+else if(sym==='O'){ox=2;red=2}
+else if(sym==='N'){ox=3;red=3}
+else if(sym==='C'){ox=4;red=4}
+else{ox=valence;red=Math.max(1,8-valence)}
+const fmt=ch=>ch===0?'':(Math.abs(ch)===1?(ch>0?'+':'−'):Math.abs(ch)+(ch>0?'+':'−'));
+if(ox===0)return{oxidation:`${sym} (inerte)`,reduction:`—`,oxPotential:'—',redPotential:'—'};
+const couple=redoxCouples[sym]?redoxCouples[sym][0]:null;
+return{
+oxidation:`${sym} → ${sym}${fmt(ox)} + ${ox}e⁻`,
+reduction:`${sym} + ${red}e⁻ → ${sym}${fmt(-red)}`,
+oxPotential:couple?`E° = ${couple.E}`:'—',
+redPotential:couple?`E° = ${couple.E}`:'—'
+}
+}
+
+/* ============ HESS ============ */
+const enthalpiesFormation={
+'H2O(l)':-285.83,'H2O(g)':-241.82,'H2O2(l)':-187.78,'CO2(g)':-393.51,'CO(g)':-110.53,
+'CH4(g)':-74.81,'C2H6(g)':-84.68,'C3H8(g)':-103.85,'C6H6(l)':49.03,'C2H4(g)':52.26,'C2H2(g)':226.73,
+'CH3OH(l)':-238.66,'C2H5OH(l)':-277.69,'NH3(g)':-46.11,'HNO3(l)':-174.1,
+'NO(g)':90.25,'NO2(g)':33.18,'SO2(g)':-296.83,'SO3(g)':-395.72,'H2SO4(l)':-814.0,'H2S(g)':-20.6,
+'HCl(g)':-92.31,'HF(g)':-271.1,'NaCl(s)':-411.15,'KCl(s)':-436.75,'CaCl2(s)':-795.8,'MgCl2(s)':-641.3,
+'FeCl3(s)':-399.5,'FeCl2(s)':-341.8,'CuCl2(s)':-220.1,'AlCl3(s)':-704.2,'CaCO3(s)':-1206.9,'CaO(s)':-635.09,'Ca(OH)2(s)':-986.09,
+'Fe2O3(s)':-824.2,'Fe3O4(s)':-1118.4,'FeO(s)':-272.0,'CuO(s)':-157.3,'Cu2O(s)':-168.6,'Al2O3(s)':-1675.7,'MgO(s)':-601.6,
+'ZnO(s)':-350.5,'Ag2O(s)':-31.1,'MnO2(s)':-520.0,'Na2CO3(s)':-1130.7,'NaHCO3(s)':-950.8,'NaOH(s)':-425.6,'KOH(s)':-424.8,
+'C6H12O6(s)':-1274.5,'CH3COOH(l)':-484.5,'PbO(s)':-217.3,'PbO2(s)':-277.4,'PbSO4(s)':-919.2,
+'AgCl(s)':-127.0,'AgNO3(s)':-124.4,'CuSO4(s)':-771.4,'UF6(g)':-2148.0,'UO2(s)':-1085.0
+};
+
+/* ============ LATIMER ============ */
+const latimerDB={
+'Fe':[{ox:'+3',species:'Fe³⁺',E:'+0.77'},{ox:'+2',species:'Fe²⁺',E:'-0.44'},{ox:'0',species:'Fe',E:null}],
+'Mn':[{ox:'+7',species:'MnO₄⁻',E:'+0.56'},{ox:'+4',species:'MnO₂',E:'+1.23'},{ox:'+2',species:'Mn²⁺',E:'-1.18'},{ox:'0',species:'Mn',E:null}],
+'Cr':[{ox:'+6',species:'Cr₂O₇²⁻',E:'+1.33'},{ox:'+3',species:'Cr³⁺',E:'-0.74'},{ox:'0',species:'Cr',E:null}],
+'Cu':[{ox:'+2',species:'Cu²⁺',E:'+0.16'},{ox:'+1',species:'Cu⁺',E:'+0.52'},{ox:'0',species:'Cu',E:null}],
+'N':[{ox:'+5',species:'NO₃⁻',E:'+0.96'},{ox:'+2',species:'NO',E:'+1.36'},{ox:'0',species:'N₂',E:'-1.87'},{ox:'-3',species:'NH₄⁺',E:null}],
+'S':[{ox:'+6',species:'SO₄²⁻',E:'+0.17'},{ox:'+4',species:'SO₂',E:'+0.51'},{ox:'0',species:'S',E:'+0.14'},{ox:'-2',species:'H₂S',E:null}],
+'Cl':[{ox:'+7',species:'ClO₄⁻',E:'+1.19'},{ox:'+1',species:'HClO',E:'+1.63'},{ox:'0',species:'Cl₂',E:'+1.36'},{ox:'-1',species:'Cl⁻',E:null}],
+'O':[{ox:'0',species:'O₂',E:'+0.68'},{ox:'-1',species:'H₂O₂',E:'+1.77'},{ox:'-2',species:'H₂O',E:null}],
+'Ag':[{ox:'+1',species:'Ag⁺',E:'+0.80'},{ox:'0',species:'Ag',E:null}],
+'Pb':[{ox:'+4',species:'PbO₂',E:'+1.46'},{ox:'+2',species:'Pb²⁺',E:'-0.13'},{ox:'0',species:'Pb',E:null}]
+};
+
+/* ============ LEWIS VSEPR ============ */
+const valenceElectrons={H:1,He:2,Li:1,Be:2,B:3,C:4,N:5,O:6,F:7,Ne:8,Na:1,Mg:2,Al:3,Si:4,P:5,S:6,Cl:7,Ar:8,K:1,Ca:2,Fe:2,Co:2,Ni:2,Cu:1,Zn:2,Br:7,Ag:1,Sn:4,I:7,Au:1,Hg:2,Pb:4,U:6};
+const vseprGeometries={
+'AX2':{name:'Linéaire',angle:'180°',hybridization:'sp'},
+'AX3':{name:'Trigonal plane',angle:'120°',hybridization:'sp²'},
+'AX4':{name:'Tétraédrique',angle:'109.5°',hybridization:'sp³'},
+'AX5':{name:'Bipyramide trigonale',angle:'90°/120°',hybridization:'sp³d'},
+'AX6':{name:'Octaédrique',angle:'90°',hybridization:'sp³d²'},
+'AX2E':{name:'Coudée',angle:'<120°',hybridization:'sp²'},
+'AX3E':{name:'Pyramidale trigonale',angle:'<109.5°',hybridization:'sp³'},
+'AX2E2':{name:'Coudée',angle:'<109.5°',hybridization:'sp³'},
+'AX4E':{name:'Balancelle',angle:'<109.5°',hybridization:'sp³d'},
+'AX3E2':{name:'En T',angle:'<90°',hybridization:'sp³d'},
+'AX2E3':{name:'Linéaire',angle:'180°',hybridization:'sp³d'},
+'AX5E':{name:'Pyramidale carrée',angle:'<90°',hybridization:'sp³d²'},
+'AX4E2':{name:'Carré plane',angle:'90°',hybridization:'sp³d²'}
+};
+
+function analyzeLewis(formula){
+const atoms={};let i=0;
+while(i<formula.length){
+const ch=formula[i];
+if(/[A-Z]/.test(ch)){
+let el=ch;i++;
+while(i<formula.length&&/[a-z]/.test(formula[i])){el+=formula[i];i++}
+let count='';
+while(i<formula.length&&/\d/.test(formula[i])){count+=formula[i];i++}
+atoms[el]=(atoms[el]||0)+(count?parseInt(count):1)
+}else{i++}
+}
+const elemList=Object.keys(atoms);
+if(elemList.length===0)return{error:'Formule invalide.'};
+if(elemList.length===1)return{error:'Molécule monoatomique.'};
+const nonH=elemList.filter(e=>e!=='H');
+if(nonH.length===0)return{error:'H₂ — linéaire.'};
+const enValues={H:2.20,C:2.55,N:3.04,O:3.44,F:3.98,Cl:3.16,S:2.58,P:2.19,Br:2.96,I:2.66,Si:1.90,B:2.04};
+nonH.sort((a,b)=>(enValues[a]||2)-(enValues[b]||2));
+const central=nonH[0];
+const ligandCount=Object.entries(atoms).reduce((sum,[el,count])=>el===central?sum:sum+count,0);
+const centralValence=valenceElectrons[central]||4;
+const monovalent=['H','F','Cl','Br','I'];
+let ligandE=0;
+for(const[el,count]of Object.entries(atoms)){
+if(el===central)continue;
+if(monovalent.includes(el))ligandE+=count;
+else if(['O','S'].includes(el)&&['C','N','S','P'].includes(central))ligandE+=count*2;
+else ligandE+=count
+}
+const remaining=centralValence-ligandE;
+const lonePairs=Math.max(0,Math.floor(remaining/2));
+let key=`AX${ligandCount}`;
+if(lonePairs>0)key+=`E${lonePairs}`;
+if(ligandCount===2&&lonePairs===0)key='AX2';
+if(ligandCount===3&&lonePairs===0)key='AX3';
+if(ligandCount===4&&lonePairs===0)key='AX4';
+if(ligandCount===5&&lonePairs===0)key='AX5';
+if(ligandCount===6&&lonePairs===0)key='AX6';
+if(ligandCount===2&&lonePairs===1)key='AX2E';
+if(ligandCount===3&&lonePairs===1)key='AX3E';
+if(ligandCount===2&&lonePairs===2)key='AX2E2';
+if(ligandCount===4&&lonePairs===1)key='AX4E';
+if(ligandCount===3&&lonePairs===2)key='AX3E2';
+if(ligandCount===2&&lonePairs===3)key='AX2E3';
+if(ligandCount===5&&lonePairs===1)key='AX5E';
+if(ligandCount===4&&lonePairs===2)key='AX4E2';
+const geom=vseprGeometries[key]||{name:'Inconnue',angle:'—',hybridization:'—'};
+return{formula,central,ligandCount,lonePairs,stericNumber:ligandCount+lonePairs,key,geom,atoms}
+}
+
+/* ============ LATIMER RENDER ============ */
+function renderLatimer(symbol){
+const container=document.getElementById('latimerDiagram');
+const canvas=document.getElementById('frostCanvas');
+const data=latimerDB[symbol];
+if(!data){container.innerHTML='<span style="color:var(--text-dim);font-size:0.65rem;">Pas de données. Essayez Fe, Mn, Cr, Cu, N, S, Cl, O, Ag, Pb.</span>';canvas.innerHTML='';return}
+let html='';
+data.forEach((item,i)=>{html+=`<span class="latimer-species">${item.species}</span>`;if(item.E!==null&&i<data.length-1)html+=`<span class="latimer-arrow"><span class="evalue">${item.E}</span><span>──→</span></span>`});
+container.innerHTML=html;
+
+const sorted=[...data].reverse();
+const points=[];let cum=0;
+points.push({ox:parseInt(sorted[0].ox),nE:0,s:sorted[0].species});
+for(let i=1;i<sorted.length;i++){const n=parseInt(sorted[i].ox)-parseInt(sorted[i-1].ox);const E=parseFloat(sorted[i-1].E);if(!isNaN(E))cum+=n*E;points.push({ox:parseInt(sorted[i].ox),nE:cum,s:sorted[i].species})}
+
+const w=canvas.clientWidth||400,h=200;
+const pad={l:40,r:20,t:20,b:30};
+const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+const minOx=Math.min(...points.map(p=>p.ox)),maxOx=Math.max(...points.map(p=>p.ox));
+const minNE=Math.min(...points.map(p=>p.nE),0),maxNE=Math.max(...points.map(p=>p.nE),0);
+const rx=maxOx-minOx||1,ry=maxNE-minNE||1;
+const xPos=ox=>pad.l+((ox-minOx)/rx)*pw;
+const yPos=ne=>pad.t+ph-((ne-minNE)/ry)*ph;
+
+let svg=`<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:100%">`;
+svg+=`<line x1="${pad.l}" y1="${pad.t+ph}" x2="${pad.l+pw}" y2="${pad.t+ph}" stroke="#fff" stroke-opacity="0.3"/>`;
+svg+=`<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${pad.t+ph}" stroke="#fff" stroke-opacity="0.3"/>`;
+const pts=points.map(p=>({x:xPos(p.ox),y:yPos(p.nE),...p}));
+for(let i=0;i<pts.length-1;i++)svg+=`<line x1="${pts[i].x}" y1="${pts[i].y}" x2="${pts[i+1].x}" y2="${pts[i+1].y}" stroke="#a855f7" stroke-width="1.5"/>`;
+pts.forEach(p=>{svg+=`<circle cx="${p.x}" cy="${p.y}" r="3" fill="#a855f7"/><text x="${p.x}" y="${p.y-6}" fill="#ffd700" font-size="7" text-anchor="middle">${p.s}</text><text x="${p.x}" y="${pad.t+ph+12}" fill="#8ba3c7" font-size="7" text-anchor="middle">${p.ox>0?'+':''}${p.ox}</text>`});
+svg+=`</svg>`;
+canvas.innerHTML=svg
+}
+
+/* Exercice */
+document.getElementById('checkBtn').addEventListener('click',()=>{
+const input=document.getElementById('exerciseInput').value.trim();
+const fb=document.getElementById('exerciseFeedback');
+if(!input){fb.innerHTML='<span style="color:var(--accent-red)">Entrez une réponse</span>';return}
+const u=balanceEquation(input);
+const t=balanceEquation(document.getElementById('equationInput').value);
+if(t.error){fb.innerHTML='<span style="color:var(--accent-red)">Référence invalide</span>';return}
+if(u.error){fb.innerHTML=`<span style="color:var(--accent-red)">✗ ${u.error}</span>`;return}
+const norm=a=>{const g=a.filter(c=>c>0).reduce((x,y)=>{while(y){[x,y]=[y,x%y]}return x},0);return a.map(c=>c/g)};
+const un=norm(u.coeffs),tn=norm(t.coeffs);
+const match=un.length===tn.length&&un.every((c,i)=>Math.abs(c-tn[i])<0.01);
+fb.innerHTML=match?'<span style="color:var(--accent-green)">✓ Correct !</span>':`<span style="color:var(--accent-red)">✗ Attendu : ${t.left} → ${t.right}</span>`
+});
+
+/* pH */
+document.getElementById('hConcentration').addEventListener('input',e=>{
+const h=parseFloat(e.target.value);const r=document.getElementById('phResult');
+if(!isFinite(h)||h<=0){r.textContent='pH = —';return}
+r.textContent=`pH = ${(-Math.log10(h)).toFixed(2)}`
+});
+document.getElementById('pkaInput').addEventListener('input',updateHend);
+document.getElementById('ratioInput').addEventListener('input',updateHend);
+function updateHend(){
+const pka=parseFloat(document.getElementById('pkaInput').value);
+const ratio=parseFloat(document.getElementById('ratioInput').value);
+const r=document.getElementById('hendersonResult');
+if(!isFinite(pka)||!isFinite(ratio)||ratio<=0){r.textContent='pH = —';return}
+r.textContent=`pH = ${(pka+Math.log10(ratio)).toFixed(2)}`
+}
+
+/* ============ HESS UI ============ */
+document.getElementById('hessBtn').addEventListener('click',()=>{
+const eq=document.getElementById('hessInput').value.trim();
+const r=document.getElementById('hessResult');
+if(!eq){r.innerHTML='<span style="color:var(--accent-red)">Entrez une équation</span>';return}
+const parts=eq.split(/->|=>|→/);
+if(parts.length!==2){r.innerHTML='<span style="color:var(--accent-red)">Flèche manquante</span>';return}
+const reac=parts[0].split('+').map(s=>s.trim()).filter(s=>s);
+const prod=parts[1].split('+').map(s=>s.trim()).filter(s=>s);
+function parseTerm(t){
+const m=t.match(/^(\d*)\s*(.+)$/);
+if(!m)return null;
+const coef=m[1]?parseInt(m[1]):1;
+let f=m[2].trim();
+let dhf=null;
+const sm=f.match(/^(.+?)(\((?:l|g|s|aq)\))$/);
+if(sm&&enthalpiesFormation[sm[1]+sm[2]]!==undefined)dhf=enthalpiesFormation[sm[1]+sm[2]];
+if(dhf===null){const base=f.replace(/\((?:l|g|s|aq)\)$/,'');for(const k of Object.keys(enthalpiesFormation)){if(k.replace(/\((?:l|g|s|aq)\)$/,'')===base){dhf=enthalpiesFormation[k];break}}}
+if(dhf===null){const em=f.match(/^([A-Z][a-z]?)\d*$/);if(em&&elementsBySymbol[em[1]])dhf=0}
+if(dhf===null){const baseEl=f.replace(/\((?:l|g|s|aq)\)$/,'');const em=baseEl.match(/^([A-Z][a-z]?)\d*$/);if(em&&elementsBySymbol[em[1]])dhf=0}
+return{coef,formula:f,dhf}
+}
+const rp=reac.map(parseTerm).filter(x=>x);
+const pp=prod.map(parseTerm).filter(x=>x);
+const missing=[...rp,...pp].filter(x=>x.dhf===null);
+if(missing.length>0){r.innerHTML=`<span style="color:var(--accent-red)">ΔHf° manquant : ${missing.map(x=>x.formula).join(', ')}</span>`;return}
+let sp=0,sr=0;
+pp.forEach(x=>sp+=x.coef*x.dhf);
+rp.forEach(x=>sr+=x.coef*x.dhf);
+const dH=sp-sr;
+r.innerHTML=`<div>ΔH°r = ${sp.toFixed(1)} − ${sr.toFixed(1)}</div><div style="font-size:1.1rem;color:var(--accent-gold);font-weight:bold;margin-top:4px;">ΔH°r = ${dH>0?'+':''}${dH.toFixed(1)} kJ/mol</div><div style="color:${dH<0?'var(--accent-red)':'var(--accent-blue)'};font-weight:bold;margin-top:4px;">${dH<0?'🔥 EXOTHERMIQUE':'❄️ ENDOTHERMIQUE'}</div>`
+});
+
+/* ============ THERMO UI ============ */
+const F=96485,R=8.314;
+document.getElementById('calcThermoBtn').addEventListener('click',()=>{
+const E0=parseFloat(document.getElementById('ecellInput').value);
+const n=parseFloat(document.getElementById('nElectronsInput').value);
+const T=parseFloat(document.getElementById('tempInput').value)||298.15;
+const r=document.getElementById('thermoResult');
+if(!isFinite(E0)||!isFinite(n)||n<=0){r.innerHTML='<span style="color:var(--accent-red)">E° et n requis</span>';return}
+const dG=-n*F*E0;
+const K=Math.exp(-dG/(R*T));
+r.innerHTML=`<div>ΔG° = <span class="gold">${(dG/1000).toFixed(2)} kJ/mol</span></div><div>K = <span class="gold">${K.toExponential(3)}</span></div><div class="${dG<0?'green':'red'}">${dG<0?'✅ SPONTANÉE':'❌ NON SPONTANÉE'}</div>`
+});
+document.getElementById('calcNernstBtn').addEventListener('click',()=>{
+const E0=parseFloat(document.getElementById('ecellInput').value);
+const n=parseFloat(document.getElementById('nElectronsInput').value);
+const T=parseFloat(document.getElementById('tempInput').value)||298.15;
+const Q=parseFloat(document.getElementById('qInput').value);
+const r=document.getElementById('nernstResult');
+if(!isFinite(E0)||!isFinite(n)||n<=0||!isFinite(Q)||Q<=0){r.innerHTML='<span style="color:var(--accent-red)">E°, n, Q requis (Q>0)</span>';return}
+const E=E0-(R*T/(n*F))*Math.log(Q);
+r.innerHTML=`<div style="font-size:1.1rem;color:var(--accent-gold);font-weight:bold;">E = ${E.toFixed(4)} V</div>`
+});
+
+/* ============ LEWIS UI ============ */
+document.getElementById('lewisBtn').addEventListener('click',()=>{
+const formula=document.getElementById('lewisInput').value.trim();
+const r=document.getElementById('lewisResult');
+if(!formula){r.innerHTML='<span style="color:var(--accent-red)">Entrez une formule</span>';return}
+const a=analyzeLewis(formula);
+if(a.error){r.innerHTML=`<span style="color:var(--accent-red)">✗ ${a.error}</span>`;return}
+const ligands=Object.entries(a.atoms).filter(([el])=>el!==a.central);
+let svg='<svg class="vsepr-svg" viewBox="0 0 200 150" style="width:100%;max-width:200px;height:150px;display:block;margin:6px auto;">';
+const cx=100,cy=75;
+svg+=`<circle cx="${cx}" cy="${cy}" r="14" fill="#ffd700"/><text x="${cx}" y="${cy+4}" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">${a.central}</text>`;
+const n=a.ligandCount;
+for(let i=0;i<n;i++){
+const angle=(2*Math.PI*i)/n-Math.PI/2;
+const x=cx+50*Math.cos(angle),y=cy+50*Math.sin(angle);
+svg+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#4ade80" stroke-width="2"/>`;
+svg+=`<circle cx="${x}" cy="${y}" r="10" fill="#4ade80"/><text x="${x}" y="${y+4}" fill="#000" font-size="8" font-weight="bold" text-anchor="middle">${ligands[i%ligands.length][0]}</text>`
+}
+svg+='</svg>';
+r.innerHTML=`<div><span class="green">Formule :</span> ${a.formula}</div><div><span class="green">Atome central :</span> ${a.central}</div><div><span class="green">Ligands :</span> ${a.ligandCount}</div><div><span class="green">Doublets non liants :</span> ${a.lonePairs}</div><div><span class="green">Nombre stérique :</span> ${a.stericNumber}</div><div style="margin-top:6px;"><span class="gold">Géométrie :</span> ${a.geom.name} (${a.key})<br><span class="gold">Angle :</span> ${a.geom.angle}<br><span class="gold">Hybridation :</span> ${a.geom.hybridization}</div>${svg}`
+});
+
+/* ============ INIT ============ */
+loadElement('N');
+document.getElementById('solveBtn').click();
+document.getElementById('hessBtn').click();
+document.getElementById('lewisBtn').click();
+       
     </script>
 </body>
 </html>
