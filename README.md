@@ -179,8 +179,6 @@ Distribué sous **MIT**. Voir [LICENSE](https://github.com/gunout/physique-chimi
 
 <div align="center">
 
-**[⬆ Retour en haut](#-the-elements)**
-
 [![GitHub](https://img.shields.io/badge/GitHub-gunout-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/gunout)
 
 Fait avec ❤️ et ⚗️ en France — Octobre 2026
