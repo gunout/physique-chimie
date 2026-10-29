@@ -334,12 +334,12 @@
         .tool-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 6px var(--accent-blue-glow); }
         .thermo-row { display: flex; align-items: center; gap: 6px; }
         .thermo-row label { min-width: 90px; }
-        .thermo-row input {
+        .thermo-row input, .thermo-row select {
             flex-grow: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color);
             color: var(--text-main); padding: 4px 6px; border-radius: 3px;
             font-family: 'Courier New', monospace; font-size: 0.7rem; outline: none; min-width: 0;
         }
-        .thermo-row input:focus { border-color: var(--accent-blue); }
+        .thermo-row input:focus, .thermo-row select:focus { border-color: var(--accent-blue); }
         .thermo-buttons { display: flex; gap: 6px; }
         .tool-btn {
             background: var(--accent-blue); color: #fff; border: none;
@@ -539,6 +539,41 @@
                 <div class="tool-result" id="hendersonResult">pH = —</div>
             </div>
 
+            <div class="tool-panel" style="grid-column: 1 / -1;">
+                <h3>💥 Collisions de nucléons — <span id="collisionElementName" style="color:var(--accent-gold);">Nitrogen</span></h3>
+                <div style="font-size:0.6rem; color:var(--text-dim); margin-bottom:4px;">
+                    Cible : noyau de l'élément chargé (<span id="collisionTargetInfo">Z=7, N=7</span>). Choisissez le projectile et l'énergie cinétique dans le référentiel labo.
+                </div>
+                <div class="thermo-row">
+                    <label>Projectile :</label>
+                    <select id="projType" class="tool-input" style="flex:1;">
+                        <option value="p">Proton (p)</option>
+                        <option value="n">Neutron (n)</option>
+                    </select>
+                </div>
+                <div class="thermo-row">
+                    <label>T_kin (MeV) :</label>
+                    <input type="number" id="kinEnergyInput" value="300" step="any">
+                </div>
+                <div class="thermo-buttons">
+                    <button id="calcCollisionBtn" class="tool-btn">CALCULER (nucléon ↔ noyau)</button>
+                </div>
+                <div class="tool-result" id="collisionResult">—</div>
+                <div class="tool-result" id="collisionDetails" style="font-size:0.6rem; color:var(--text-dim);"></div>
+                <hr style="border:none; border-top:1px solid var(--border-color); margin:6px 0;">
+                <div class="thermo-row">
+                    <label>Paire N-N :</label>
+                    <select id="nnPairSelect" class="tool-input" style="flex:1;">
+                        <option value="pp">p + p</option>
+                        <option value="pn">p + n</option>
+                        <option value="np">n + p</option>
+                        <option value="nn">n + n</option>
+                    </select>
+                    <button id="calcNNBtn" class="tool-btn" style="flex:0 0 auto; padding:6px 10px;">CALCULER (N-N)</button>
+                </div>
+                <div class="tool-result" id="nnResult" style="font-size:0.6rem;">—</div>
+            </div>
+
             <div class="tool-panel">
                 <h3>🎓 Exercice d'équilibrage</h3>
                 <div style="font-size: 0.6rem; color: var(--text-dim); line-height: 1.4;">Équilibrez l'équation du Solver ci-dessus, puis entrez votre réponse complète (réactifs → produits) :</div>
@@ -555,7 +590,8 @@
                     • Hess : indiquez les états (g/l/s/aq).<br>
                     • Latimer/Frost : Fe, Mn, Cr, Cu, N, S, Cl, O, Ag, Pb.<br>
                     • Nernst : Q = quotient réactionnel.<br>
-                    • VSEPR : formules type H2O, NH3, CH4, SF6.
+                    • VSEPR : formules type H2O, NH3, CH4, SF6.<br>
+                    • Collisions : cible = noyau de l'élément chargé (T_kin en MeV labo).
                 </div>
             </div>
         </section>
@@ -1128,6 +1164,9 @@
                 usesList.appendChild(li);
             });
 
+            // Synchronisation de la cible de collisions avec l'élément chargé
+            setCollisionTarget(sym, name, protons, neutrons);
+
             renderSpectrum(sym);
             renderAtom(protons, neutrons, shellsArr);
             renderReactions(sym, name, category, valence);
@@ -1591,7 +1630,142 @@ svg+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#4ade80" stroke-wi
 svg+=`<circle cx="${x}" cy="${y}" r="10" fill="#4ade80"/><text x="${x}" y="${y+4}" fill="#000" font-size="8" font-weight="bold" text-anchor="middle">${ligands[i%ligands.length][0]}</text>`
 }
 svg+='</svg>';
-r.innerHTML=`<div><span class="green">Formule :</span> ${a.formula}</div><div><span class="green">Atome central :</span> ${a.central}</div><div><span class="green">Ligands :</span> ${a.ligandCount}</div><div><span class="green">Doublets non liants :</span> ${a.lonePairs}</div><div><span class="green">Nombre stérique :</span> ${a.stericNumber}</div><div style="margin-top:6px;"><span class="gold">Géométrie :</span> ${a.geom.name} (${a.key})<br><span class="gold">Angle :</span> ${a.geom.angle}<br><span class="gold">Hybridation :</span> ${a.geom.hybridization}</div>${svg}`
+r.innerHTML=`<div><span class="green">Formule :</span> ${a.formula}</div><div><span class="green">Atome central :</span> ${a.central}</div><div><span class="green">Ligands :</span> ${a.ligandCount}</div><div><span class="green">Doublets non liants :</span> ${a.lonePairs}</div><div><span class="green">Nombre stérique :</span> ${a.stericNumber}</div><div style="margin-top:6px;"><span class="gold">Géométrie :</span> ${a.geom.name} (${a.key})<br><span class="gold">Angle :</span> ${a.geom.angle}<br><span class="gold">Hybridation :</span> ${a.geom.hybridation}</div>${svg}`
+});
+
+/* ============ COLLISIONS DE NUCLÉONS ============ */
+const M_PROTON  = 938.272;   // MeV/c²
+const M_NEUTRON = 939.565;
+const M_PION_CH = 139.570;
+const M_PION_0  = 134.977;
+const HBAR_C    = 197.327;   // MeV·fm
+
+function nucleonMass(type) {
+    return type === 'p' ? M_PROTON : M_NEUTRON;
+}
+
+// Noyau cible courant (mis à jour par loadElement)
+let currentNucleus = { symbol: 'N', Z: 7, N: 7, A: 14, name: 'Nitrogen' };
+
+function setCollisionTarget(sym, name, Z, N) {
+    currentNucleus = { symbol: sym, name: name, Z: Z, N: N, A: Z + N };
+    const elName = document.getElementById('collisionElementName');
+    const info   = document.getElementById('collisionTargetInfo');
+    if (elName) elName.textContent = name;
+    if (info)   info.textContent = `Z=${Z}, N=${N}, A=${Z+N}`;
+}
+
+// ---------- Noyau cible (nucléon ↔ noyau) ----------
+function collisionWithNucleus() {
+    const projType = document.getElementById('projType').value;
+    const Tlab     = parseFloat(document.getElementById('kinEnergyInput').value);
+    const r1       = document.getElementById('collisionResult');
+    const r2       = document.getElementById('collisionDetails');
+
+    if (!isFinite(Tlab) || Tlab < 0) {
+        r1.innerHTML = '<span style="color:var(--accent-red)">Entrez une énergie cinétique ≥ 0.</span>';
+        r2.innerHTML = '';
+        return;
+    }
+
+    const m1 = nucleonMass(projType);
+    const m2 = currentNucleus.Z * M_PROTON + currentNucleus.N * M_NEUTRON;
+
+    const s      = m1*m1 + m2*m2 + 2*m2*(m1 + Tlab);
+    const sqrtS  = Math.sqrt(s);
+    const Tcm    = sqrtS - (m1 + m2);
+
+    const p_cm   = Math.sqrt(Math.max(0, (s - (m1+m2)*(m1+m2)) * (s - (m1-m2)*(m1-m2)))) / (2*sqrtS);
+    const lambdaBar = p_cm > 0 ? HBAR_C / p_cm : Infinity;
+
+    function thresholdLab(M) {
+        const total = m1 + m2 + M;
+        return (total*total - (m1+m2)*(m1+m2)) / (2*m2);
+    }
+    const thrPion0  = thresholdLab(M_PION_0);
+    const thrPionCh = thresholdLab(M_PION_CH);
+    const EsepApprox = 8 * currentNucleus.A;
+
+    const gammaLab = 1 + Tlab / m1;
+    const betaLab  = Math.sqrt(1 - 1/(gammaLab*gammaLab));
+
+    r1.innerHTML = `
+        <div><span class="green">Cible :</span> ${currentNucleus.name} (Z=${currentNucleus.Z}, N=${currentNucleus.N}, A=${currentNucleus.A})</div>
+        <div><span class="green">Masse cible ≈</span> <span class="gold">${m2.toFixed(1)} MeV/c²</span></div>
+        <div><span class="green">√s :</span> <span class="gold">${sqrtS.toFixed(2)} MeV</span></div>
+        <div><span class="green">T_cm (disponible) :</span> <span class="gold">${Tcm.toFixed(2)} MeV</span></div>
+        <div><span class="green">λ̄ (Broglie, CM) :</span> <span class="gold">${isFinite(lambdaBar) ? lambdaBar.toFixed(3) + ' fm' : '—'}</span></div>
+        <div><span class="green">γ_lab :</span> ${gammaLab.toFixed(3)} • <span class="green">β_lab :</span> ${betaLab.toFixed(4)}</div>
+        <div style="margin-top:4px;"><span class="gold">Seuil π⁰ :</span> ${thrPion0.toFixed(1)} MeV • <span class="gold">Seuil π± :</span> ${thrPionCh.toFixed(1)} MeV</div>
+        <div><span class="gold">Seuil approx. de spallation :</span> ~${EsepApprox.toFixed(0)} MeV (8 MeV/nucléon × A)</div>
+    `;
+
+    let regime = '';
+    if (Tcm < M_PION_0) {
+        regime = '🔵 Diffusion élastique / réactions sans production de pions.';
+    } else if (Tcm < 2*M_PION_0) {
+        regime = '🟡 Production de pions (1 à 2).';
+    } else if (Tcm < 1000) {
+        regime = '🟠 Production multiple de pions, résonances Δ.';
+    } else {
+        regime = '🔴 Régime haute énergie : production de particules lourdes, structure partonique.';
+    }
+    if (Tlab > EsepApprox) {
+        regime += ' ⚠ Énergie suffisante pour briser le noyau cible (spallation).';
+    }
+    r2.innerHTML = `<div style="margin-top:4px;">${regime}</div>
+        <div style="margin-top:4px; opacity:0.7;">s = m₁² + m₂² + 2m₂(m₁+T_lab) ; T_cm = √s − (m₁+m₂). Masse noyau ≈ Z·m_p + N·m_n (liaison négligée).</div>`;
+}
+
+// ---------- Paire nucléon-nucléon ----------
+function collisionNN() {
+    const pair   = document.getElementById('nnPairSelect').value;
+    const Tlab   = parseFloat(document.getElementById('kinEnergyInput').value);
+    const r      = document.getElementById('nnResult');
+
+    if (!isFinite(Tlab) || Tlab < 0) {
+        r.innerHTML = '<span style="color:var(--accent-red)">Entrez une énergie cinétique ≥ 0.</span>';
+        return;
+    }
+
+    const type1 = pair[0];
+    const type2 = pair[1];
+    const m1 = nucleonMass(type1);
+    const m2 = nucleonMass(type2);
+
+    const s     = m1*m1 + m2*m2 + 2*m2*(m1 + Tlab);
+    const sqrtS = Math.sqrt(s);
+    const Tcm   = sqrtS - (m1 + m2);
+
+    const p_cm  = Math.sqrt(Math.max(0, (s - (m1+m2)*(m1+m2)) * (s - (m1-m2)*(m1-m2)))) / (2*sqrtS);
+    const lambdaBar = p_cm > 0 ? HBAR_C / p_cm : Infinity;
+
+    function thresholdLab(M) {
+        const total = m1 + m2 + M;
+        return (total*total - (m1+m2)*(m1+m2)) / (2*m2);
+    }
+    const thrPion0  = thresholdLab(M_PION_0);
+    const thrPionCh = thresholdLab(M_PION_CH);
+    const thr2Pion  = thresholdLab(2*M_PION_0);
+    const nPionsMax = Math.floor(Tcm / M_PION_0);
+
+    const gammaLab = 1 + Tlab / m1;
+    const betaLab  = Math.sqrt(1 - 1/(gammaLab*gammaLab));
+
+    const label = `${type1} + ${type2}`;
+    r.innerHTML = `
+        <div><span class="green">Paire :</span> ${label} • <span class="green">T_lab :</span> ${Tlab.toFixed(1)} MeV</div>
+        <div><span class="green">√s :</span> <span class="gold">${sqrtS.toFixed(2)} MeV</span> • <span class="green">T_cm :</span> <span class="gold">${Tcm.toFixed(2)} MeV</span></div>
+        <div><span class="green">λ̄ :</span> ${isFinite(lambdaBar) ? lambdaBar.toFixed(3) + ' fm' : '—'} • <span class="green">γ :</span> ${gammaLab.toFixed(3)} • <span class="green">β :</span> ${betaLab.toFixed(4)}</div>
+        <div><span class="gold">Seuil π⁰ :</span> ${thrPion0.toFixed(1)} MeV • <span class="gold">π± :</span> ${thrPionCh.toFixed(1)} MeV • <span class="gold">2π⁰ :</span> ${thr2Pion.toFixed(1)} MeV</div>
+        <div><span class="gold">Pions max (estim.) :</span> ${nPionsMax}</div>
+    `;
+}
+
+document.getElementById('calcCollisionBtn').addEventListener('click', collisionWithNucleus);
+document.getElementById('calcNNBtn').addEventListener('click', collisionNN);
+document.getElementById('kinEnergyInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') { collisionWithNucleus(); collisionNN(); }
 });
 
 /* ============ INIT ============ */
@@ -1599,6 +1773,8 @@ loadElement('N');
 document.getElementById('solveBtn').click();
 document.getElementById('hessBtn').click();
 document.getElementById('lewisBtn').click();
+collisionWithNucleus();
+collisionNN();
        
     </script>
 </body>
