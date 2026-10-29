@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Elements - Realistic Spectral + Audio</title>
+    <title>The Elements - Expert BWR + Audio + Balancer</title>
     <style>
         :root {
             --bg-color: #050a14;
@@ -41,11 +41,9 @@
         .app-container { width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 3; }
         header { text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         h1 { font-size: 1.4rem; color: var(--text-main); letter-spacing: 3px; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
-        .subtitle { font-size: 0.75rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .subtitle { font-size: 0.7rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
 
-        /* ============================================================
-           LECTEUR AUDIO RÉEL
-           ============================================================ */
+        /* ============ AUDIO PLAYER ============ */
         .audio-player {
             display: flex; align-items: center; justify-content: space-between;
             margin-top: 10px; background: var(--panel-bg); padding: 6px 12px;
@@ -69,7 +67,6 @@
             height: 100%; width: 100%; position: relative;
             background: repeating-linear-gradient(90deg, var(--accent-blue), var(--accent-blue) 2px, transparent 2px, transparent 4px);
             opacity: 0.4;
-            transition: opacity 0.2s;
         }
         .waveform.progress {
             background: repeating-linear-gradient(90deg, var(--accent-blue), var(--accent-blue) 2px, transparent 2px, transparent 4px);
@@ -78,26 +75,19 @@
             position: absolute; top: 0; left: 0;
             box-shadow: 0 0 8px var(--accent-blue);
         }
-        .waveform.paused {
-            opacity: 0.25;
-            animation: none !important;
-        }
+        .waveform.paused { opacity: 0.25; animation: none !important; }
         @keyframes waveform-pulse {
             0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(0.7); }
         }
-        .waveform.playing {
-            animation: waveform-pulse 0.6s infinite ease-in-out;
-        }
+        .waveform.playing { animation: waveform-pulse 0.6s infinite ease-in-out; }
         .time-display { font-size: 0.7rem; color: var(--text-dim); min-width: 100px; text-align: right; white-space: nowrap; }
         .time-display .current { color: var(--accent-blue); font-weight: bold; }
         .time-display .sep { color: var(--text-dim); }
         .time-display .total { color: var(--text-main); }
-        .volume-slider {
-            width: 50px; height: 4px; accent-color: var(--accent-blue);
-            cursor: pointer; margin-left: 4px;
-        }
+        .volume-slider { width: 50px; height: 4px; accent-color: var(--accent-blue); cursor: pointer; margin-left: 4px; }
 
+        /* ============ ATOME ============ */
         .atom-section { display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; padding: 5px 0; }
         .element-symbol {
             font-size: 3.5rem; color: var(--text-main);
@@ -144,6 +134,8 @@
             box-shadow: 0 0 10px var(--electron-color), 0 0 20px var(--electron-color);
         }
         @keyframes spin { 0% { transform: rotateY(0deg) rotateX(5deg); } 100% { transform: rotateY(360deg) rotateX(5deg); } }
+
+        /* ============ PANELS ============ */
         .info-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; }
         .panel {
             background: var(--panel-bg); border: 1px solid var(--border-color);
@@ -161,7 +153,7 @@
         .uses-list li { margin-bottom: 4px; display: flex; line-height: 1.2; color: var(--text-main); }
         .uses-num { color: var(--accent-red); margin-right: 6px; font-weight: bold; }
 
-        /* SPECTRE */
+        /* ============ SPECTRE ============ */
         .spectrum-panel { background: var(--panel-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .spectrum-header {
             display: flex; justify-content: space-between; align-items: center;
@@ -190,6 +182,7 @@
         .spectrum-labels span { position: relative; }
         .spectrum-labels span::before { content: ''; position: absolute; top: -4px; left: 50%; width: 1px; height: 3px; background: var(--text-dim); }
 
+        /* ============ ÉQUATIONS ============ */
         .equations-panel { background: var(--panel-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .equations-panel h3 {
             color: var(--accent-blue); font-size: 0.7rem; margin-bottom: 8px;
@@ -256,6 +249,8 @@
         .reaction-item .type { color: var(--accent-red); font-size: 0.55rem; text-transform: uppercase; font-weight: bold; }
         .reaction-item .eq-text { flex-grow: 1; margin: 0 8px; }
         .reaction-item .arrow-icon { color: var(--accent-blue); }
+
+        /* ============ TABLEAU PÉRIODIQUE ============ */
         .periodic-table-wrapper { background: var(--panel-bg); border: 1px solid var(--border-color); padding: 8px; border-radius: 4px; overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .pt-grid { display: grid; grid-template-columns: repeat(18, 1fr); gap: 2px; min-width: 600px; }
         .pt-cell {
@@ -273,7 +268,6 @@
             .orbit, .electron-orbit { width: 150px; height: 150px; }
             .info-grid { grid-template-columns: 1fr; }
             .half-reactions { grid-template-columns: 1fr; }
-            .subtitle { font-size: 0.6rem; }
             .time-display { min-width: 80px; font-size: 0.6rem; }
             .volume-slider { width: 30px; }
         }
@@ -286,10 +280,9 @@
             <h1>THE ELEMENTS</h1>
             <div class="subtitle" id="trackTitle">♪ Paradise Mashup — Coldplay vs. Fedde le Grand vs. LMFAO vs. Guru Josh vs. Dragonette</div>
             
-            <!-- LECTEUR AUDIO RÉEL -->
+            <!-- LECTEUR AUDIO : renommez votre fichier en mashup.mp3 -->
             <audio id="audioEl" preload="metadata">
-                <!-- URL-encoded : espaces -> %20, & -> %26, [ ] -> %5B %5D -->
-                <source src="01%20-%20Coldplay%20%26%20Fedde%20le%20Grand%20vs.%20LMFAO%20vs.%20Guru%20Josh%20Project%20vs.%20Dragonette%20-%20Paradise%20%5BMashup-Germany%5D.mp3" type="audio/mpeg">
+                <source src="mashup.mp3" type="audio/mpeg">
                 Votre navigateur ne supporte pas l'audio HTML5.
             </audio>
             
@@ -408,7 +401,7 @@
 
     <script>
         /* ============================================================
-           AUDIO - LECTEUR RÉEL
+           LECTEUR AUDIO
            ============================================================ */
         const audioEl = document.getElementById('audioEl');
         const playBtn = document.getElementById('playBtn');
@@ -419,15 +412,12 @@
         const totalTimeEl = document.getElementById('totalTime');
         const volumeSlider = document.getElementById('volumeSlider');
 
-        // Formatage temps mm:ss
         function formatTime(seconds) {
             if (!isFinite(seconds) || isNaN(seconds)) return '00:00';
             const m = Math.floor(seconds / 60);
             const s = Math.floor(seconds % 60);
             return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }
-
-        // Mise à jour de la barre de progression
         function updateProgress() {
             const duration = audioEl.duration;
             const current = audioEl.currentTime;
@@ -437,14 +427,10 @@
                 currentTimeEl.textContent = formatTime(current);
             }
         }
-
-        // Événements audio
         audioEl.addEventListener('loadedmetadata', () => {
             totalTimeEl.textContent = formatTime(audioEl.duration);
         });
-
         audioEl.addEventListener('timeupdate', updateProgress);
-
         audioEl.addEventListener('ended', () => {
             playBtn.textContent = '▶ PLAY';
             playBtn.style.background = 'var(--accent-red)';
@@ -453,34 +439,28 @@
             waveformProgress.style.setProperty('--progress', '0%');
             currentTimeEl.textContent = '00:00';
         });
-
         audioEl.addEventListener('play', () => {
             playBtn.textContent = '❚❚ PAUSE';
             playBtn.style.background = 'var(--accent-blue)';
             waveformBg.classList.remove('paused');
             waveformBg.classList.add('playing');
         });
-
         audioEl.addEventListener('pause', () => {
             playBtn.textContent = '▶ PLAY';
             playBtn.style.background = 'var(--accent-red)';
             waveformBg.classList.remove('playing');
             waveformBg.classList.add('paused');
         });
-
-        // Bouton Play/Pause
         playBtn.addEventListener('click', () => {
             if (audioEl.paused) {
                 audioEl.play().catch(err => {
                     console.error('Erreur lecture audio:', err);
-                    alert('Impossible de lire le fichier audio. Vérifiez que le fichier MP3 est bien à la racine du projet.');
+                    document.getElementById('trackTitle').innerHTML = '<span style="color: var(--accent-red);">⚠ Fichier audio introuvable — vérifiez "mashup.mp3" à la racine</span>';
                 });
             } else {
                 audioEl.pause();
             }
         });
-
-        // Clic sur la barre de progression
         waveformContainer.addEventListener('click', (e) => {
             const rect = waveformContainer.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -490,25 +470,18 @@
                 updateProgress();
             }
         });
-
-        // Volume
         volumeSlider.addEventListener('input', (e) => {
             audioEl.volume = parseFloat(e.target.value);
         });
         audioEl.volume = parseFloat(volumeSlider.value);
-
-        // Gestion des erreurs de chargement
         audioEl.addEventListener('error', () => {
-            console.error('Erreur de chargement audio. Vérifiez le chemin du fichier.');
             document.getElementById('trackTitle').innerHTML = 
-                '<span style="color: var(--accent-red);">⚠ Fichier audio introuvable — vérifiez le nom du MP3 à la racine</span>';
+                '<span style="color: var(--accent-red);">⚠ Fichier audio introuvable — vérifiez "mashup.mp3" à la racine</span>';
         });
 
         /* ============================================================
-           LE RESTE (éléments, spectre, équations) — inchangé
+           BASE DE DONNÉES DES 118 ÉLÉMENTS
            ============================================================ */
-        // [Toutes les fonctions précédentes restent identiques, je les inclus ici pour que le code soit complet]
-        
         const elementsDB = [
             ['H','Hydrogen',1.008,1,0,'1','1s¹',1,1,'Diatomic Nonmetal'],
             ['He','Helium',4.0026,2,2,'2','1s²',1,18,'Noble Gas'],
@@ -630,17 +603,578 @@
             ['Og','Oganesson',294,118,176,'2 • 8 • 18 • 32 • 32 • 18 • 8','[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶',7,18,'Noble Gas']
         ];
 
-        // [Le reste du code JS est identique à la version précédente]
-        // Pour éviter de dupliquer 500+ lignes, je référence les fonctions déjà présentes.
-        // Dans votre fichier réel, copiez-collez les fonctions :
-        // spectralLinesDB, fullConfigs, wavelengthToRGB, generatePhysicalGradient,
-        // renderSpectrum, loadElement, getFullConfig, getHalfReactions, renderReactions,
-        // renderAtom, parseFormulaRobust, solveHomogeneous, balanceEquation,
-        // et les event listeners du solveur.
+        const spectralLinesDB = {
+            'H':[410.2,434.0,486.1,656.3],'He':[388.9,447.1,471.3,492.2,501.6,587.6,667.8,706.5],
+            'Li':[460.3,497.2,610.4,670.8],'Be':[313.0,332.1,436.8,457.3,825.4],'B':[249.7,250.0,345.0,410.0,835.0],
+            'C':[426.7,477.2,505.2,538.0,658.0],'N':[399.5,444.7,463.0,500.5,567.9,648.2,746.8,821.6,862.9],
+            'O':[436.8,464.9,533.0,615.8,645.6,700.2,777.4],'F':[429.9,478.9,624.9,634.8,685.6,690.2,739.9],
+            'Ne':[540.1,585.2,588.2,594.5,614.3,640.2,659.9,692.9,717.4,724.5],'Na':[589.0,589.6,568.8,615.4,819.5],
+            'Mg':[285.2,333.7,383.8,516.7,517.3,518.4,552.8],'Al':[308.2,309.3,394.4,396.2,466.3,669.6,704.2],
+            'Si':[288.2,390.6,410.3,505.6,634.7,703.0],'P':[253.4,255.3,458.0,603.4,604.3,832.0],
+            'S':[469.4,471.0,543.3,545.4,675.7,700.0,766.5],'Cl':[438.0,452.6,481.0,542.3,546.0,614.0,725.7,754.0,858.0],
+            'Ar':[415.6,419.8,420.1,425.9,427.2,451.1,459.6,472.7,488.0,696.5,706.7,738.4,750.4,763.5,772.4,801.5,811.5,842.5],
+            'K':[404.4,404.7,766.5,769.9],'Ca':[422.7,430.3,443.5,445.5,558.2,559.4,610.3,612.2,616.1],
+            'Sc':[357.3,390.7,402.0,424.7,431.6,440.0],'Ti':[334.2,363.5,365.4,398.2,430.6,453.5,499.9,517.4,521.0],
+            'V':[306.6,318.3,411.2,437.9,438.5],'Cr':[357.9,359.3,425.4,427.5,428.9,520.6,520.8],
+            'Mn':[279.5,279.8,403.1,403.3,403.4,475.4,476.2,476.6,478.3],
+            'Fe':[372.0,373.5,374.0,382.0,385.6,386.0,404.6,438.4,440.5,489.1,495.7,516.7,526.9,532.8],
+            'Co':[340.5,341.2,345.3,346.6,350.6,384.5,387.4,399.5,412.1],'Ni':[300.2,305.1,310.2,341.5,346.2,349.3,351.5,356.6,361.9],
+            'Cu':[324.7,327.4,510.5,515.3,521.8,578.2],'Zn':[213.9,330.3,334.5,468.0,472.2,481.1],
+            'Ga':[287.4,294.4,403.3,417.2,639.7],'Ge':[265.1,269.1,303.9,326.9,422.7],
+            'As':[228.8,234.9,245.6,278.0,286.0,565.0],'Se':[196.0,203.9,206.3,473.0,476.0],
+            'Br':[470.5,478.6,481.7,500.0],'Kr':[427.4,431.9,436.2,445.4,450.2,557.0,587.1,758.7,785.5],
+            'Rb':[420.2,421.6,620.6,780.0,794.8],'Sr':[407.8,421.6,460.7,687.8,707.0],'Y':[360.1,362.9,366.5,437.5,488.4],
+            'Zr':[339.2,343.8,349.6,360.1,468.8],'Nb':[358.0,405.9,407.9,410.1,416.3],'Mo':[313.3,317.0,319.4,379.8,386.4,390.3],
+            'Tc':[310.0,320.0,330.0,400.0],'Ru':[349.9,372.8,379.9,403.3,455.5],'Rh':[339.7,343.5,369.2,437.5],
+            'Pd':[340.5,346.0,351.7,363.5],'Ag':[328.1,338.3,546.5,768.8],'Cd':[228.8,326.1,340.4,467.8,480.0,508.6,643.8],
+            'In':[303.9,325.6,410.2,451.1],'Sn':[286.3,300.9,317.5,380.1,563.2],'Sb':[231.1,259.8,287.8,323.2,372.3],
+            'Te':[238.6,253.0,277.5,386.0,486.0],'I':[206.2,519.0,546.0,576.0],
+            'Xe':[450.1,460.3,467.1,473.4,492.3,529.2,553.1,574.0,617.0,659.5,823.2,828.0],
+            'Cs':[455.5,459.3,672.3,697.3,852.1,894.4],'Ba':[455.4,493.4,553.5,577.8,597.2,611.1,614.2,649.7],
+            'La':[357.4,394.9,398.8,408.7,412.3,418.7],'Ce':[380.0,418.0,428.0,446.0,569.0],'Pr':[440.0,495.0,513.0,525.0],
+            'Nd':[430.0,460.0,490.0,520.0],'Pm':[400.0,450.0,500.0],'Sm':[420.0,460.0,500.0,560.0],
+            'Eu':[459.4,462.7,466.2,576.5,580.0,610.0,650.0],'Gd':[380.0,400.0,420.0,440.0],'Tb':[380.0,430.0,460.0,550.0],
+            'Dy':[400.0,420.0,450.0,480.0],'Ho':[380.0,410.0,440.0,460.0],'Er':[400.0,440.0,480.0,520.0],'Tm':[380.0,420.0,460.0,500.0],
+            'Yb':[400.0,450.0,500.0,550.0],'Lu':[380.0,430.0,480.0,530.0],
+            'Hf':[300,350,400,450],'Ta':[300,350,400,450],'W':[300,350,400,450],'Re':[300,350,400,450],'Os':[300,350,400,450],
+            'Ir':[300,350,400,450],'Pt':[300,350,400,450],'Au':[267.6,274.8,312.3,379.0,440.0,479.0,627.8],
+            'Hg':[253.7,365.0,404.7,435.8,546.1,577.0,579.1],'Tl':[276.8,351.9,377.6,535.0],'Pb':[283.3,368.3,405.8,500.0],
+            'Bi':[306.8,359.6,472.2,600.0],'Po':[300,400,500],'At':[300,400,500],'Rn':[300,400,500],'Fr':[300,400,500],
+            'Ra':[300,400,500],'Ac':[300,400,500],'Th':[300,400,500],'Pa':[300,400,500],'U':[300,400,500],'Np':[300,400,500],
+            'Pu':[300,400,500],'Am':[300,400,500],'Cm':[300,400,500],'Bk':[300,400,500],'Cf':[300,400,500],'Es':[300,400,500],
+            'Fm':[300,400,500],'Md':[300,400,500],'No':[300,400,500],'Lr':[300,400,500],'Rf':[300,400,500],'Db':[300,400,500],
+            'Sg':[300,400,500],'Bh':[300,400,500],'Hs':[300,400,500],'Mt':[300,400,500],'Ds':[300,400,500],'Rg':[300,400,500],
+            'Cn':[300,400,500],'Nh':[300,400,500],'Fl':[300,400,500],'Mc':[300,400,500],'Lv':[300,400,500],'Ts':[300,400,500],'Og':[300,400,500]
+        };
 
-        // ⚠️ IMPORTANT : pour que ce code fonctionne, conservez le script complet
-        // de la version précédente (Realistic Spectral Fingerprint) et remplacez
-        // UNIQUEMENT le bloc audio par le nouveau.
+        const fullConfigs = {
+            'H': '1s¹', 'He': '1s²', 'Li': '1s² 2s¹', 'Be': '1s² 2s²', 'B': '1s² 2s² 2p¹', 'C': '1s² 2s² 2p²',
+            'N': '1s² 2s² 2p³', 'O': '1s² 2s² 2p⁴', 'F': '1s² 2s² 2p⁵', 'Ne': '1s² 2s² 2p⁶',
+            'Na': '1s² 2s² 2p⁶ 3s¹', 'Mg': '1s² 2s² 2p⁶ 3s²', 'Al': '1s² 2s² 2p⁶ 3s² 3p¹',
+            'Si': '1s² 2s² 2p⁶ 3s² 3p²', 'P': '1s² 2s² 2p⁶ 3s² 3p³', 'S': '1s² 2s² 2p⁶ 3s² 3p⁴',
+            'Cl': '1s² 2s² 2p⁶ 3s² 3p⁵', 'Ar': '1s² 2s² 2p⁶ 3s² 3p⁶',
+            'K': '1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹', 'Ca': '1s² 2s² 2p⁶ 3s² 3p⁶ 4s²',
+            'Fe': '1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁶ 4s²', 'Cu': '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s¹',
+            'Zn': '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s²', 'Ag': '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s¹',
+            'Au': '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s¹',
+            'Hg': '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s²'
+        };
+
+        /* ============================================================
+           FONCTIONS SPECTRE
+           ============================================================ */
+        function wavelengthToRGB(wl) {
+            let r, g, b;
+            if (wl >= 380 && wl < 440) { r = -(wl - 440) / (440 - 380); g = 0; b = 1; }
+            else if (wl >= 440 && wl < 490) { r = 0; g = (wl - 440) / (490 - 440); b = 1; }
+            else if (wl >= 490 && wl < 510) { r = 0; g = 1; b = -(wl - 510) / (510 - 490); }
+            else if (wl >= 510 && wl < 580) { r = (wl - 510) / (580 - 510); g = 1; b = 0; }
+            else if (wl >= 580 && wl < 645) { r = 1; g = -(wl - 645) / (645 - 580); b = 0; }
+            else if (wl >= 645 && wl <= 780) { r = 1; g = 0; b = 0; }
+            else { r = 0; g = 0; b = 0; }
+            let factor;
+            if (wl >= 380 && wl < 420) factor = 0.3 + 0.7 * (wl - 380) / (420 - 380);
+            else if (wl >= 420 && wl <= 700) factor = 1.0;
+            else if (wl > 700 && wl <= 780) factor = 0.3 + 0.7 * (780 - wl) / (780 - 700);
+            else factor = 0;
+            const gamma = 0.8;
+            const adjust = (c) => Math.round(255 * Math.pow(c * factor, gamma));
+            return { r: adjust(r), g: adjust(g), b: adjust(b) };
+        }
+        function rgbToCss(c) { return `rgb(${c.r}, ${c.g}, ${c.b})`; }
+        function generatePhysicalGradient() {
+            const stops = [];
+            for (let wl = 380; wl <= 750; wl += 10) {
+                const c = wavelengthToRGB(wl);
+                const percent = ((wl - 380) / (750 - 380)) * 100;
+                stops.push(`${rgbToCss(c)} ${percent.toFixed(1)}%`);
+            }
+            return `linear-gradient(to right, ${stops.join(', ')})`;
+        }
+        const PHYSICAL_GRADIENT = generatePhysicalGradient();
+        let currentSpectrumMode = 'emission';
+        let currentSymbol = 'N';
+
+        function setSpectrumMode(mode) {
+            currentSpectrumMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            renderSpectrum(currentSymbol);
+        }
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => setSpectrumMode(btn.dataset.mode));
+        });
+
+        function renderSpectrum(symbol) {
+            currentSymbol = symbol;
+            const bar = document.getElementById('spectrumBar');
+            bar.innerHTML = '';
+            let lines = spectralLinesDB[symbol] || [];
+            if (lines.length === 0) {
+                let seed = symbol.charCodeAt(0) + (symbol.charCodeAt(1) || 0) * 7;
+                const count = 5 + (seed % 6);
+                for (let i = 0; i < count; i++) {
+                    seed = (seed * 9301 + 49297) % 233280;
+                    lines.push(380 + (seed / 233280) * 370);
+                }
+            }
+            lines = [...new Set(lines.map(w => Math.round(w * 10) / 10))].sort((a, b) => a - b);
+            if (lines.length > 20) {
+                const step = lines.length / 20;
+                const filtered = [];
+                for (let i = 0; i < 20; i++) filtered.push(lines[Math.floor(i * step)]);
+                lines = filtered;
+            }
+            const minWl = 380, maxWl = 750;
+            if (currentSpectrumMode === 'emission') bar.style.background = '#000';
+            else bar.style.background = PHYSICAL_GRADIENT;
+            lines.forEach(wl => {
+                if (wl < minWl || wl > maxWl) return;
+                const percent = ((wl - minWl) / (maxWl - minWl)) * 100;
+                const line = document.createElement('div');
+                line.className = 'spectrum-line';
+                line.style.left = `${percent}%`;
+                if (currentSpectrumMode === 'emission') {
+                    const color = rgbToCss(wavelengthToRGB(wl));
+                    line.style.background = color;
+                    line.style.color = color;
+                    line.style.boxShadow = `0 0 6px ${color}, 0 0 12px ${color}`;
+                } else if (currentSpectrumMode === 'absorption') {
+                    line.classList.add('absorption-line');
+                    line.style.width = '3px';
+                    line.style.background = '#000';
+                    line.style.boxShadow = '0 0 4px rgba(0,0,0,0.8)';
+                } else {
+                    line.classList.add('gradient-line');
+                    line.style.background = '#fff';
+                    line.style.boxShadow = '0 0 8px #fff, 0 0 16px #fff';
+                }
+                bar.appendChild(line);
+            });
+            const modeLabel = { emission: 'ÉMISSION', absorption: 'ABSORPTION', gradient: 'GRADIENT' }[currentSpectrumMode];
+            document.getElementById('spectrumRange').textContent = `380–750 NM • ${modeLabel} • ${lines.length} raies`;
+        }
+
+        /* ============================================================
+           TABLEAU PÉRIODIQUE
+           ============================================================ */
+        const ptGrid = document.getElementById('periodicTable');
+        const elementsBySymbol = {};
+        elementsDB.forEach(el => elementsBySymbol[el[0]] = el);
+
+        const positions = {
+            'H':[1,1],'He':[1,18],'Li':[2,1],'Be':[2,2],'B':[2,13],'C':[2,14],'N':[2,15],'O':[2,16],'F':[2,17],'Ne':[2,18],
+            'Na':[3,1],'Mg':[3,2],'Al':[3,13],'Si':[3,14],'P':[3,15],'S':[3,16],'Cl':[3,17],'Ar':[3,18],
+            'K':[4,1],'Ca':[4,2],'Sc':[4,3],'Ti':[4,4],'V':[4,5],'Cr':[4,6],'Mn':[4,7],'Fe':[4,8],'Co':[4,9],'Ni':[4,10],'Cu':[4,11],'Zn':[4,12],'Ga':[4,13],'Ge':[4,14],'As':[4,15],'Se':[4,16],'Br':[4,17],'Kr':[4,18],
+            'Rb':[5,1],'Sr':[5,2],'Y':[5,3],'Zr':[5,4],'Nb':[5,5],'Mo':[5,6],'Tc':[5,7],'Ru':[5,8],'Rh':[5,9],'Pd':[5,10],'Ag':[5,11],'Cd':[5,12],'In':[5,13],'Sn':[5,14],'Sb':[5,15],'Te':[5,16],'I':[5,17],'Xe':[5,18],
+            'Cs':[6,1],'Ba':[6,2],'La':[9,3],'Ce':[9,4],'Pr':[9,5],'Nd':[9,6],'Pm':[9,7],'Sm':[9,8],'Eu':[9,9],'Gd':[9,10],'Tb':[9,11],'Dy':[9,12],'Ho':[9,13],'Er':[9,14],'Tm':[9,15],'Yb':[9,16],'Lu':[9,17],
+            'Hf':[6,4],'Ta':[6,5],'W':[6,6],'Re':[6,7],'Os':[6,8],'Ir':[6,9],'Pt':[6,10],'Au':[6,11],'Hg':[6,12],'Tl':[6,13],'Pb':[6,14],'Bi':[6,15],'Po':[6,16],'At':[6,17],'Rn':[6,18],
+            'Fr':[7,1],'Ra':[7,2],'Ac':[10,3],'Th':[10,4],'Pa':[10,5],'U':[10,6],'Np':[10,7],'Pu':[10,8],'Am':[10,9],'Cm':[10,10],'Bk':[10,11],'Cf':[10,12],'Es':[10,13],'Fm':[10,14],'Md':[10,15],'No':[10,16],'Lr':[10,17],
+            'Rf':[7,4],'Db':[7,5],'Sg':[7,6],'Bh':[7,7],'Hs':[7,8],'Mt':[7,9],'Ds':[7,10],'Rg':[7,11],'Cn':[7,12],'Nh':[7,13],'Fl':[7,14],'Mc':[7,15],'Lv':[7,16],'Ts':[7,17],'Og':[7,18]
+        };
+
+        const rows = 10, cols = 18;
+        const matrix = Array.from({ length: rows }, () => Array(cols).fill(null));
+        elementsDB.forEach(el => {
+            const sym = el[0];
+            if (positions[sym]) {
+                const [r, c] = positions[sym];
+                if (r <= rows && c <= cols) matrix[r - 1][c - 1] = sym;
+            }
+        });
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'pt-cell';
+                const symbol = matrix[r][c];
+                if (symbol) {
+                    cell.textContent = symbol;
+                    cell.dataset.symbol = symbol;
+                    if (symbol === 'N') cell.classList.add('active');
+                    cell.addEventListener('click', () => loadElement(symbol));
+                } else {
+                    cell.classList.add('empty');
+                }
+                ptGrid.appendChild(cell);
+            }
+        }
+
+        function getFullConfig(symbol, protons, orbitalShort) {
+            if (fullConfigs[symbol]) return fullConfigs[symbol];
+            const nobleGases = {'He':2,'Ne':10,'Ar':18,'Kr':36,'Xe':54,'Rn':86};
+            let prefix = '';
+            for (const [ng, num] of Object.entries(nobleGases)) {
+                if (num < protons && protons - num <= 18 && orbitalShort.startsWith('[' + ng + ']')) {
+                    prefix = fullConfigs[ng] || '';
+                    break;
+                }
+            }
+            const match = orbitalShort.match(/\[[A-Z][a-z]?\]\s*(.*)/);
+            if (match && prefix) return prefix + ' ' + match[1].trim();
+            return orbitalShort;
+        }
+
+        function getHalfReactions(symbol, protons, category, valence) {
+            let ox, red;
+            if (category.includes('Alkali')) { ox = 1; red = 1; }
+            else if (category.includes('Alkaline')) { ox = 2; red = 2; }
+            else if (category.includes('Noble')) { ox = 0; red = 0; }
+            else if (category.includes('Halogen')) { ox = 1; red = 1; }
+            else if (symbol === 'H') { ox = 1; red = 1; }
+            else if (symbol === 'O') { ox = 2; red = 2; }
+            else if (symbol === 'N') { ox = 3; red = 3; }
+            else if (symbol === 'C') { ox = 4; red = 4; }
+            else if (symbol === 'S') { ox = 2; red = 2; }
+            else if (valence <= 3) { ox = valence; red = 8 - valence; }
+            else { ox = valence; red = 8 - valence; }
+            const fmt = (ch) => ch === 0 ? '' : (Math.abs(ch) === 1 ? (ch > 0 ? '+' : '−') : Math.abs(ch) + (ch > 0 ? '+' : '−'));
+            if (ox === 0) return { oxidation: `${symbol} (gaz noble, inerte)`, reduction: `Pas de réduction standard` };
+            return {
+                oxidation: `${symbol} → ${symbol}${fmt(ox)} + ${ox}e⁻`,
+                reduction: `${symbol} + ${red}e⁻ → ${symbol}${fmt(-red)}`
+            };
+        }
+
+        const reactionsDB = {
+            'H':[{type:'Combustion',eq:'H2 + O2 -> H2O'},{type:'Synthèse',eq:'H2 + N2 -> NH3'},{type:'Rédox',eq:'H2 + Cl2 -> HCl'},{type:'Métal+acide',eq:'Zn + HCl -> ZnCl2 + H2'}],
+            'O':[{type:'Combustion',eq:'CH4 + O2 -> CO2 + H2O'},{type:'Combustion',eq:'C3H8 + O2 -> CO2 + H2O'},{type:'Oxydation',eq:'Fe + O2 -> Fe2O3'},{type:'Décomposition',eq:'H2O2 -> H2O + O2'}],
+            'N':[{type:'Synthèse',eq:'N2 + H2 -> NH3'},{type:'Combustion',eq:'N2 + O2 -> NO'},{type:'Oxydation',eq:'NO + O2 -> NO2'},{type:'Ammoniac',eq:'NH3 + O2 -> NO + H2O'}],
+            'C':[{type:'Combustion',eq:'C + O2 -> CO2'},{type:'Combustion',eq:'CH4 + O2 -> CO2 + H2O'},{type:'Combustion',eq:'C2H6 + O2 -> CO2 + H2O'},{type:'Combustion',eq:'C6H6 + O2 -> CO2 + H2O'}],
+            'Fe':[{type:'Oxydation',eq:'Fe + O2 -> Fe2O3'},{type:'Rouille',eq:'Fe + O2 + H2O -> Fe(OH)3'},{type:'Acide',eq:'Fe + HCl -> FeCl2 + H2'},{type:'Rédox',eq:'Fe + CuSO4 -> FeSO4 + Cu'},{type:'Thermite',eq:'Fe2O3 + Al -> Fe + Al2O3'}],
+            'Cu':[{type:'Acide nitrique',eq:'Cu + HNO3 -> Cu(NO3)2 + NO + H2O'},{type:'Acide sulfurique',eq:'Cu + H2SO4 -> CuSO4 + SO2 + H2O'},{type:'Oxydation',eq:'Cu + O2 -> CuO'},{type:'Rédox',eq:'Cu + AgNO3 -> Cu(NO3)2 + Ag'}],
+            'Al':[{type:'Oxydation',eq:'Al + O2 -> Al2O3'},{type:'Acide',eq:'Al + HCl -> AlCl3 + H2'},{type:'Base',eq:'Al + NaOH + H2O -> NaAlO2 + H2'},{type:'Thermite',eq:'Al + Fe2O3 -> Al2O3 + Fe'}],
+            'Na':[{type:'Eau',eq:'Na + H2O -> NaOH + H2'},{type:'Chlore',eq:'Na + Cl2 -> NaCl'},{type:'Oxydation',eq:'Na + O2 -> Na2O'},{type:'Carbonate',eq:'Na + O2 + CO2 -> Na2CO3'}],
+            'Cl':[{type:'Synthèse',eq:'H2 + Cl2 -> HCl'},{type:'Métal',eq:'Na + Cl2 -> NaCl'},{type:'Fer',eq:'Fe + Cl2 -> FeCl3'},{type:'Disproportionnation',eq:'Cl2 + NaOH -> NaCl + NaClO + H2O'}],
+            'S':[{type:'Combustion',eq:'S + O2 -> SO2'},{type:'Oxydation',eq:'SO2 + O2 -> SO3'},{type:'Acide sulfurique',eq:'SO3 + H2O -> H2SO4'},{type:'Métal',eq:'Fe + S -> FeS'}],
+            'P':[{type:'Combustion',eq:'P4 + O2 -> P4O10'},{type:'Oxydation',eq:'P4O10 + H2O -> H3PO4'},{type:'Chlore',eq:'P4 + Cl2 -> PCl3'},{type:'Acide phosphorique',eq:'P4 + O2 + H2O -> H3PO4'}],
+            'Mg':[{type:'Combustion',eq:'Mg + O2 -> MgO'},{type:'Acide',eq:'Mg + HCl -> MgCl2 + H2'},{type:'Eau',eq:'Mg + H2O -> Mg(OH)2 + H2'},{type:'CO2',eq:'Mg + CO2 -> MgO + C'}],
+            'Ca':[{type:'Eau',eq:'Ca + H2O -> Ca(OH)2 + H2'},{type:'Oxydation',eq:'Ca + O2 -> CaO'},{type:'Carbonatation',eq:'CaO + CO2 -> CaCO3'},{type:'Chaux',eq:'CaCO3 -> CaO + CO2'}],
+            'K':[{type:'Eau',eq:'K + H2O -> KOH + H2'},{type:'Chlore',eq:'K + Cl2 -> KCl'},{type:'Oxydation',eq:'K + O2 -> K2O'},{type:'Nitrate',eq:'K + HNO3 -> KNO3 + H2'}],
+            'Zn':[{type:'Acide',eq:'Zn + HCl -> ZnCl2 + H2'},{type:'Oxydation',eq:'Zn + O2 -> ZnO'},{type:'Rédox',eq:'Zn + CuSO4 -> ZnSO4 + Cu'},{type:'Sulfure',eq:'Zn + S -> ZnS'}],
+            'Pb':[{type:'Oxydation',eq:'Pb + O2 -> PbO'},{type:'Acide',eq:'Pb + HNO3 -> Pb(NO3)2 + NO + H2O'},{type:'Batterie',eq:'Pb + PbO2 + H2SO4 -> PbSO4 + H2O'},{type:'Oxyde',eq:'PbO + C -> Pb + CO'}],
+            'Ag':[{type:'Oxydation',eq:'Ag + O2 -> Ag2O'},{type:'Acide nitrique',eq:'Ag + HNO3 -> AgNO3 + NO + H2O'},{type:'Chlorure',eq:'AgNO3 + NaCl -> AgCl + NaNO3'}],
+            'Au':[{type:'Eau régale',eq:'Au + HNO3 + HCl -> AuCl3 + NO + H2O'},{type:'Cyanuration',eq:'Au + NaCN + O2 + H2O -> NaAu(CN)2 + NaOH'},{type:'Chlore',eq:'Au + Cl2 -> AuCl3'}],
+            'Mn':[{type:'Permanganate',eq:'KMnO4 + HCl -> KCl + MnCl2 + H2O + Cl2'},{type:'Oxydation',eq:'Mn + O2 -> MnO2'},{type:'Acide',eq:'Mn + HCl -> MnCl2 + H2'},{type:'Rédox',eq:'KMnO4 + FeSO4 + H2SO4 -> K2SO4 + MnSO4 + Fe2(SO4)3 + H2O'}],
+            'Cr':[{type:'Dichromate',eq:'K2Cr2O7 + HCl -> KCl + CrCl3 + H2O + Cl2'},{type:'Oxydation',eq:'Cr + O2 -> Cr2O3'},{type:'Acide',eq:'Cr + HCl -> CrCl2 + H2'}],
+            'U':[{type:'Oxydation',eq:'U + O2 -> UO2'},{type:'Fluoruration',eq:'UO2 + HF -> UF4 + H2O'},{type:'Fluor',eq:'UF4 + F2 -> UF6'}]
+        };
+
+        function getGenericReactions(sym, name, category, valence) {
+            const r = [];
+            if (category.includes('Alkali') || category.includes('Alkaline')) {
+                r.push({type:'Eau',eq:`${sym} + H2O -> ${sym}OH + H2`});
+                r.push({type:'Oxydation',eq:`${sym} + O2 -> ${sym}2O`});
+            } else if (category.includes('Transition')) {
+                r.push({type:'Oxydation',eq:`${sym} + O2 -> ${sym}O`});
+                r.push({type:'Acide',eq:`${sym} + HCl -> ${sym}Cl2 + H2`});
+            } else if (category.includes('Halogen')) {
+                r.push({type:'Synthèse',eq:`${sym}2 + H2 -> H${sym}`});
+            } else if (category.includes('Noble')) {
+                r.push({type:'Inerte',eq:`${sym} + ... -> pas de réaction`});
+            } else {
+                r.push({type:'Combustion',eq:`${sym} + O2 -> ${sym}O2`});
+                r.push({type:'Acide',eq:`${sym} + HCl -> ${sym}Cl + H2`});
+            }
+            return r;
+        }
+
+        function renderReactions(sym, name, category, valence) {
+            const list = document.getElementById('reactionList');
+            list.innerHTML = '';
+            let reactions = reactionsDB[sym] || getGenericReactions(sym, name, category, valence);
+            reactions.forEach(r => {
+                const div = document.createElement('div');
+                div.className = 'reaction-item';
+                div.innerHTML = `<span class="type">${r.type}</span><span class="eq-text">${r.eq}</span><span class="arrow-icon">→</span>`;
+                div.addEventListener('click', () => {
+                    document.getElementById('equationInput').value = r.eq;
+                    document.getElementById('solveBtn').click();
+                    document.getElementById('equationInput').scrollIntoView({behavior:'smooth',block:'center'});
+                });
+                list.appendChild(div);
+            });
+        }
+
+        function renderAtom(protons, neutrons, shellsArr) {
+            const nucleus = document.getElementById('nucleus');
+            nucleus.innerHTML = '';
+            const dp = Math.min(protons, 30), dn = Math.min(neutrons, 30);
+            for (let i = 0; i < dp; i++) {
+                const p = document.createElement('div');
+                p.className = 'nucleon proton';
+                const a = Math.random() * Math.PI * 2, r = Math.random() * 18;
+                p.style.transform = `translate(-50%, -50%) translate3d(${Math.cos(a)*r}px, ${Math.sin(a)*r}px, ${(Math.random()-0.5)*20}px)`;
+                nucleus.appendChild(p);
+            }
+            for (let i = 0; i < dn; i++) {
+                const n = document.createElement('div');
+                n.className = 'nucleon neutron';
+                const a = Math.random() * Math.PI * 2, r = Math.random() * 18;
+                n.style.transform = `translate(-50%, -50%) translate3d(${Math.cos(a)*r}px, ${Math.sin(a)*r}px, ${(Math.random()-0.5)*20}px)`;
+                nucleus.appendChild(n);
+            }
+            const shells = [document.getElementById('shell1'), document.getElementById('shell2'), document.getElementById('shell3')];
+            shells.forEach(s => s.innerHTML = '');
+            const maxE = [2, 8, 8];
+            let left = protons;
+            for (let i = 0; i < 3; i++) {
+                if (left <= 0) break;
+                const count = Math.min(left, maxE[i]);
+                for (let j = 0; j < count; j++) {
+                    const e = document.createElement('div');
+                    e.className = 'electron';
+                    const a = (j / count) * Math.PI * 2;
+                    e.style.left = `${50 + 50 * Math.cos(a)}%`;
+                    e.style.top = `${50 + 50 * Math.sin(a)}%`;
+                    shells[i].appendChild(e);
+                }
+                left -= count;
+            }
+        }
+
+        function loadElement(symbol) {
+            const el = elementsBySymbol[symbol];
+            if (!el) return;
+            const [sym, name, mass, protons, neutrons, shellsStr, orbital, period, group, category] = el;
+
+            document.getElementById('elementSymbol').textContent = sym;
+            document.getElementById('elementName').textContent = name;
+            document.getElementById('elementMeta').textContent = `${category.toUpperCase()} • #${String(protons).padStart(3,'0')}`;
+            const shellsArr = shellsStr.split('•').map(s => s.trim());
+            const valence = parseInt(shellsArr[shellsArr.length - 1]);
+            document.getElementById('protonsElectrons').textContent = `${protons} p⁺ / ${protons} e⁻`;
+            document.getElementById('neutronsCount').textContent = `${neutrons} n⁰`;
+            document.getElementById('valenceElectrons').textContent = `${valence} e⁻`;
+            document.getElementById('shellsConfig').textContent = shellsStr;
+            document.getElementById('orbitalConfig').textContent = orbital;
+            document.getElementById('atomicWeight').textContent = `${mass} u`;
+            document.getElementById('periodGroup').textContent = `Period ${period} • Group ${group}`;
+
+            document.getElementById('equationsElement').textContent = name;
+            document.getElementById('reactionElementName').textContent = name;
+            const fullConfig = getFullConfig(sym, protons, orbital);
+            document.getElementById('electronicConfig').innerHTML = fullConfig.split(' ').map(part => `<span class="orbital">${part}</span>`).join(' ');
+
+            const halfReactions = getHalfReactions(sym, protons, category, valence);
+            document.getElementById('oxidationEq').textContent = halfReactions.oxidation;
+            document.getElementById('reductionEq').textContent = halfReactions.reduction;
+
+            const usesList = document.getElementById('usesList');
+            usesList.innerHTML = '';
+            const uses = (sym === 'N') ? [
+                "Cryogenic liquid N₂ flash-freezing & quantum cooling",
+                "Haber-Bosch agricultural fertilizer production",
+                "Inert blanket gas for microchip lithography",
+                "DNA nucleobases & amino acid peptide chains"
+            ] : [
+                "Études de laboratoire & recherche fondamentale",
+                "Applications industrielles spécialisées",
+                "Utilisations médicales ou technologiques avancées",
+                "Matériaux et alliages à haute performance"
+            ];
+            uses.forEach((use, i) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="uses-num">0${i+1}</span> ${use}`;
+                usesList.appendChild(li);
+            });
+
+            renderSpectrum(sym);
+            renderAtom(protons, neutrons, shellsArr);
+            renderReactions(sym, name, category, valence);
+
+            document.querySelectorAll('.pt-cell').forEach(c => c.classList.remove('active'));
+            const activeCell = document.querySelector(`.pt-cell[data-symbol="${sym}"]`);
+            if (activeCell) activeCell.classList.add('active');
+        }
+
+        /* ============================================================
+           MOTEUR D'ÉQUILIBRAGE
+           ============================================================ */
+        function parseFormulaRobust(formula) {
+            const result = { elements: {}, charge: 0 };
+            let i = 0;
+            function parseGroup() {
+                const group = {};
+                while (i < formula.length && formula[i] !== ')') {
+                    const ch = formula[i];
+                    if (ch === '(') {
+                        i++;
+                        const sub = parseGroup();
+                        i++;
+                        let mult = '';
+                        while (i < formula.length && /\d/.test(formula[i])) { mult += formula[i]; i++; }
+                        const m = mult ? parseInt(mult) : 1;
+                        for (const [k, v] of Object.entries(sub)) group[k] = (group[k] || 0) + v * m;
+                    } else if (ch === '·' || ch === '.') {
+                        i++;
+                        let mult = '';
+                        while (i < formula.length && /\d/.test(formula[i])) { mult += formula[i]; i++; }
+                        const m = mult ? parseInt(mult) : 1;
+                        const rest = parseGroup();
+                        for (const [k, v] of Object.entries(rest)) group[k] = (group[k] || 0) + v * m;
+                        break;
+                    } else if (/[A-Z]/.test(ch)) {
+                        let el = ch;
+                        i++;
+                        while (i < formula.length && /[a-z]/.test(formula[i])) { el += formula[i]; i++; }
+                        let c = '';
+                        while (i < formula.length && /\d/.test(formula[i])) { c += formula[i]; i++; }
+                        group[el] = (group[el] || 0) + (c ? parseInt(c) : 1);
+                    } else if (ch === '^') {
+                        i++;
+                        let cs = '';
+                        while (i < formula.length && /[\d+-]/.test(formula[i])) { cs += formula[i]; i++; }
+                        const sign = cs.includes('-') ? -1 : 1;
+                        const nm = cs.match(/\d+/);
+                        result.charge += sign * (nm ? parseInt(nm[0]) : 1);
+                    } else if (ch === 'e' && formula[i+1] === '-') {
+                        i += 2; result.charge -= 1;
+                    } else { i++; }
+                }
+                return group;
+            }
+            const cm = formula.match(/([+-])(\d*)$/);
+            let ce = 0;
+            if (cm) {
+                ce = (cm[1] === '+' ? 1 : -1) * (cm[2] ? parseInt(cm[2]) : 1);
+                formula = formula.slice(0, -cm[0].length);
+            }
+            const g = parseGroup();
+            for (const [k, v] of Object.entries(g)) result.elements[k] = (result.elements[k] || 0) + v;
+            result.charge += ce;
+            return result;
+        }
+
+        function solveHomogeneous(matrix, m, n) {
+            const aug = matrix.map(row => [...row]);
+            let pr = 0; const pc = [];
+            for (let col = 0; col < n && pr < m; col++) {
+                let mr = pr;
+                for (let r = pr; r < m; r++) if (Math.abs(aug[r][col]) > Math.abs(aug[mr][col])) mr = r;
+                if (Math.abs(aug[mr][col]) < 1e-10) continue;
+                [aug[pr], aug[mr]] = [aug[mr], aug[pr]];
+                const p = aug[pr][col];
+                for (let c = col; c < n; c++) aug[pr][c] /= p;
+                for (let r = 0; r < m; r++) {
+                    if (r !== pr && Math.abs(aug[r][col]) > 1e-10) {
+                        const f = aug[r][col];
+                        for (let c = col; c < n; c++) aug[r][c] -= f * aug[pr][c];
+                    }
+                }
+                pc.push(col); pr++;
+            }
+            const fv = [];
+            for (let j = 0; j < n; j++) if (!pc.includes(j)) fv.push(j);
+            if (fv.length === 0) return { error: 'Système trop contraint.' };
+            const x = Array(n).fill(0);
+            fv.forEach(v => x[v] = 1);
+            for (let i = 0; i < pc.length; i++) {
+                const col = pc[i]; let val = 0;
+                for (let j = 0; j < n; j++) if (j !== col) val -= aug[i][j] * x[j];
+                x[col] = val;
+            }
+            return { coeffs: x };
+        }
+
+        function balanceEquation(input) {
+            let eq = input.trim();
+            let arrow = '->';
+            if (eq.includes('⇌')) arrow = '⇌';
+            else if (eq.includes('=>')) arrow = '=>';
+            else if (eq.includes('→')) arrow = '→';
+            else if (eq.includes('=') && !eq.includes('->')) arrow = '=';
+            else if (eq.includes('->')) arrow = '->';
+            else return { error: 'Aucune flèche trouvée.' };
+            const parts = eq.split(arrow).map(s => s.trim());
+            if (parts.length !== 2) return { error: 'Une seule flèche attendue.' };
+            const reac = parts[0].split('+').map(s => s.trim()).filter(s => s);
+            const prod = parts[1].split('+').map(s => s.trim()).filter(s => s);
+            if (!reac.length || !prod.length) return { error: 'Équation vide.' };
+            const all = [...reac, ...prod];
+            const parsed = all.map(f => {
+                const c = f.replace(/^\d+/, '').trim();
+                return c ? parseFormulaRobust(c) : { elements: {}, charge: 0 };
+            });
+            const els = new Set();
+            parsed.forEach(p => Object.keys(p.elements).forEach(e => els.add(e)));
+            const elList = Array.from(els).sort();
+            const m = elList.length + 1, n = all.length;
+            const mat = Array.from({ length: m }, () => Array(n).fill(0));
+            for (let j = 0; j < n; j++) {
+                const s = j < reac.length ? 1 : -1;
+                for (let i = 0; i < elList.length; i++) mat[i][j] = s * (parsed[j].elements[elList[i]] || 0);
+                mat[m-1][j] = s * parsed[j].charge;
+            }
+            const sol = solveHomogeneous(mat, m, n);
+            if (sol.error) return sol;
+            let coeffs = sol.coeffs;
+            let best = null;
+            for (let mult = 1; mult <= 2000; mult++) {
+                const t = coeffs.map(c => c * mult);
+                if (t.every(c => Math.abs(c - Math.round(c)) < 1e-6 && c >= -1e-9)) { best = mult; break; }
+            }
+            if (best === null) return { error: 'Pas de solution entière positive.' };
+            coeffs = coeffs.map(c => Math.round(c * best));
+            const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, Math.abs(a));
+            let pg = coeffs.filter(c => c > 0).reduce((acc, c) => gcd(acc, c), 0);
+            if (pg > 1) coeffs = coeffs.map(c => c / pg);
+            if (coeffs.some(c => c <= 0)) return { error: 'Solution non positive.' };
+            const verify = { elements: {}, charge: 0 };
+            for (let j = 0; j < n; j++) {
+                const s = j < reac.length ? 1 : -1;
+                for (const [el, c] of Object.entries(parsed[j].elements)) verify.elements[el] = (verify.elements[el] || 0) + s * coeffs[j] * c;
+                verify.charge += s * coeffs[j] * parsed[j].charge;
+            }
+            const balanced = Object.values(verify.elements).every(v => Math.abs(v) < 1e-6) && Math.abs(verify.charge) < 1e-6;
+            const fmt = (fs, cs) => fs.map((f, i) => {
+                const c = cs[i], clean = f.replace(/^\d+/, '').trim();
+                return c === 1 ? clean : `${c}${clean}`;
+            }).join(' + ');
+            return {
+                left: fmt(reac, coeffs.slice(0, reac.length)),
+                right: fmt(prod, coeffs.slice(reac.length)),
+                balanced, coeffs, arrow,
+                elements: elList,
+                charge: verify.charge
+            };
+        }
+
+        document.getElementById('solveBtn').addEventListener('click', () => {
+            const input = document.getElementById('equationInput').value;
+            const rd = document.getElementById('solverResult');
+            if (!input.trim()) { rd.innerHTML = '<span class="error">Veuillez entrer une équation.</span>'; return; }
+            const r = balanceEquation(input);
+            if (r.error) { rd.innerHTML = `<span class="error">✗ ${r.error}</span>`; return; }
+            const ck = r.balanced ? '✓' : '⚠', cc = r.balanced ? 'success' : 'error';
+            const ci = Math.abs(r.charge) > 1e-6 ? ` | charge : ${r.charge.toFixed(0)}` : ' | charge conservée';
+            const fmtCoef = (s) => s.split(' + ').map(p => {
+                const m = p.match(/^(\d+)(.+)$/);
+                return m ? `<span class="coef">${m[1]}</span><span class="formula">${m[2]}</span>` : `<span class="formula">${p}</span>`;
+            }).join(' <span style="color:var(--text-dim)">+</span> ');
+            rd.innerHTML = `
+                <div style="margin-bottom: 6px;">${fmtCoef(r.left)} <span class="arrow">→</span> ${fmtCoef(r.right)}</div>
+                <div class="${cc}" style="font-size: 0.65rem;">${ck} ${r.balanced ? 'Équation équilibrée' : 'Vérification échouée'}${ci} • ${r.elements.join(', ')}</div>
+            `;
+        });
+
+        document.getElementById('equationInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('solveBtn').click();
+        });
+
+        document.querySelectorAll('#solverExamples span').forEach(s => {
+            s.addEventListener('click', () => {
+                document.getElementById('equationInput').value = s.dataset.eq;
+                document.getElementById('solveBtn').click();
+            });
+        });
+
+        /* ============================================================
+           INITIALISATION
+           ============================================================ */
+        loadElement('N');
+        document.getElementById('solveBtn').click();
     </script>
 </body>
 </html>
