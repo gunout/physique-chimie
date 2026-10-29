@@ -20,7 +20,7 @@
 
 ## 📋 Aperçu
 
-**The Elements** est un laboratoire de chimie interactif 100 % autonome, packagé dans un seul fichier HTML. Il combine un tableau périodique complet (118 éléments), un moteur d'équilibrage redox, des diagrammes de Latimer et Frost, un analyseur VSEPR/Lewis, des calculs thermodynamiques (Hess, ΔG°, Nernst), un calculateur de pH, et un lecteur audio intégré — le tout dans une interface cyberpunk néon avec un atome 3D animé.
+**The Elements** est un laboratoire de chimie interactif 100 % autonome, packagé dans un seul fichier HTML. Il combine un tableau périodique complet (118 éléments), un moteur d'équilibrage redox, des diagrammes de Latimer et Frost, un analyseur VSEPR/Lewis, des calculs thermodynamiques (Hess, ΔG°, Nernst), un calculateur de pH, un module de collisions de nucléons, et un lecteur audio intégré — le tout dans une interface cyberpunk néon avec un atome 3D animé.
 
 > ⚠️ **Outil pédagogique** — Ne remplace pas un cours de chimie ou un manuel de référence.
 
@@ -59,6 +59,13 @@
 - pH et Henderson-Hasselbalch
 - Exercice d'équilibrage avec vérification
 
+**💥 Collisions de nucléons**
+- Cible = noyau de l'élément chargé (Z, N, A synchronisés avec le tableau périodique)
+- Calcul de √s, T_cm, longueur d'onde de Broglie réduite, γ et β
+- Seuils de production de pions (π⁰, π±, 2π⁰) en énergie labo
+- Estimation du nombre max de pions et seuil approximatif de spallation
+- Mode paire N-N libre : p+p, p+n, n+p, n+n pour comparaison
+
 **🎵 Lecteur audio**
 - Bande-son d'ambiance (mashup.mp3)
 - Waveform animée, volume, seek
@@ -85,11 +92,13 @@ Ou directement : `open index.html` (macOS) / `start index.html` (Windows) / `xdg
 
 | Action | Description |
 |--------|-------------|
-| **Clic élément** | Charge l'élément (symbole, atome, spectre, réactions, Latimer) |
+| **Clic élément** | Charge l'élément (symbole, atome, spectre, réactions, Latimer, cible de collisions) |
 | **Clic réaction** | Envoie l'équation vers le Solver |
 | **Clic mode spectre** | Bascule Émission / Absorption / Gradient |
 | **Enter dans le Solver** | Équilibre l'équation |
 | **Clic waveform** | Seek audio |
+| **Sélection projectile + T_kin** | Lance le calcul de collision nucléon ↔ noyau |
+| **Sélection paire N-N** | Lance le calcul de collision nucléon-nucléon libre |
 
 ---
 
@@ -97,7 +106,7 @@ Ou directement : `open index.html` (macOS) / `start index.html` (Windows) / `xdg
 
 ```
 physique-chimie/
-├── index.html      # Application complète (~2000 lignes)
+├── index.html      # Application complète (~2300 lignes)
 ├── mashup.mp3      # Bande-son
 ├── LICENSE         # MIT
 └── README.md
@@ -117,6 +126,7 @@ physique-chimie/
 | Graphiques | SVG inline |
 | Audio | audio HTML5 |
 | Algèbre | Gauss-Jordan |
+| Physique nucléaire | Cinématique relativiste (invariant s, seuils) |
 | Data | 118 éléments, 40+ spectres, 100+ ΔHf° |
 
 ---
@@ -130,25 +140,27 @@ physique-chimie/
 | Composés ΔHf° | **100+** |
 | Diagrammes Latimer | **10** |
 | Géométries VSEPR | **13** |
-| Lignes de code | **~2000** |
-| Taille | **~100 Ko** |
+| Paires N-N simulables | **4** (p+p, p+n, n+p, n+n) |
+| Lignes de code | **~2300** |
+| Taille | **~110 Ko** |
 | Dépendances | **0** |
 
 ---
 
 ## 🎯 Public cible
 
-Lycéens scientifiques, étudiants prépa/licence/BTS chimie, enseignants, curieux.
+Lycéens scientifiques, étudiants prépa/licence/BTS chimie et physique, enseignants, curieux.
 
 ---
 
 ## 🗺️ Roadmap
 
 - [x] **v1.0** — Tableau, atome 3D, spectre, redox, Latimer/Frost, VSEPR, thermo, pH, audio
-- [ ] **v1.1** — Toggle sombre/clair
-- [ ] **v1.2** — Export PDF fiches éléments
-- [ ] **v1.3** — Simulateur titrage acide-base
-- [ ] **v1.4** — Mécanismes organiques
+- [x] **v1.1** — Collisions de nucléons (cible = élément chargé + paires N-N)
+- [ ] **v1.2** — Toggle sombre/clair
+- [ ] **v1.3** — Export PDF fiches éléments
+- [ ] **v1.4** — Simulateur titrage acide-base
+- [ ] **v1.5** — Mécanismes organiques
 - [ ] **v2.0** — Backend progression
 
 ---
@@ -167,7 +179,7 @@ git push origin feature/ma-contribution
 
 ## ⚠️ Avertissement
 
-**Outil pédagogique.** Ne remplace pas un cours. Les valeurs (E°, ΔHf°, spectres) sont approximatives. Pour des calculs critiques, consultez NIST ou manuels de référence.
+**Outil pédagogique.** Ne remplace pas un cours. Les valeurs (E°, ΔHf°, spectres, masses nucléaires) sont approximatives. Pour des calculs critiques, consultez NIST, CODATA ou manuels de référence.
 
 ---
 
